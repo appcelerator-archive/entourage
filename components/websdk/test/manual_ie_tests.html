@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+	<title>TestMonkey Driver</title>
+	<link rel="stylesheet" href="stylesheets/driver.css" type="text/css" media="screen" charset="utf-8" />
+
+	<script type="text/javascript" charset="utf-8" src="javascripts/entourage.js"></script>
+
+	<style>
+	.active
+	{
+		background-color:red;
+	}
+	.inactive
+	{
+		background-color:#ccc;
+	}
+	.attr1
+	{
+		background-color:green;
+	}
+	.attr2
+	{
+		background-color:blue;
+	}
+	.box
+	{
+		background-color:#444;
+		border:1px solid #ff0000;
+		padding:10px;
+		height:50px;
+		width:200px;
+	}
+	
+	
+	</style>
+</head>
+<body id="body">
+
+	<div behavior="rounded[radius=5]" class="box">hello</div>
+	<div behavior="rounded[radius=10]" class="box">hello</div>
+	<div behavior="rounded[radius=15]" class="box">hello</div>
+	<div behavior="rounded[radius=20]" class="box">hello</div>
+
+
+	<!-- STATE MACHINE TESTS -->
+	<div id="test_38" on="click then statechange[test=one]">one</div>
+	<div id="test_39" on="click then statechange[test=two]">two</div>
+	<div id="test_40" on="click then statechange[test=three]">three</div>
+	
+	<div id="test_38a" on="test[one] then set[class=active] else set[class=inactive] ">one</div>
+	<div id="test_39a" on="test[two] then set[class=active] else set[class=inactive] ">two</div>
+	<div id="test_40a" on="test[three] then set[class=active] else set[class=inactive] ">three</div>
+
+
+	<!-- JQuery Sub API -->
+	JQuery MQ Subscribe
+	<input type="text" value="failed" id="jquerySubTest"/>
+	<script>
+		$("#jquerySubTest").subscribe("test.jquery.sub", function(msg,element) {
+		  element.value = msg.payload.newvalue;
+		});
+
+		$MQ("test.jquery.sub", {
+		  newvalue:"passed"
+		});
+	</script>
+	
+	<!-- COMPILER TESTS -->
+	
+	<div attr1="div">attr1</div>
+	<span attr1="span">attr1 - green</span>
+	<p attr1="paragraph">attr1 - green</p>
+	<b attr1="bold">attr1</b>
+	<input attr1="input" value"attr1"/>
+	<div attr2="div">attr2 - blue</div>
+	<span attr2="span">attr2 - blue</span>
+	<p attr2="paragraph">attr2 - blue</p>
+	<b attr2="bold">attr2 - blue</b>
+	<input attr2="input" value="attr2"/>
+	<script>
+			var x= new App.StateMachine('test');
+			x.addState('one','l:foo[name=foo,date=bar]',false);
+			x.addState('two','l:foo1',false);
+			x.addState('three','l:foo2',true);
+			App.Compiler.registerAttributeProcessor(['span','p'],'attr1',
+			{
+				handle: function(element,attribute,value)
+				{
+					swiss('#'+element.id).addClass('attr1');
+				}
+			});
+			App.Compiler.registerAttributeProcessor('*','attr2',
+			{
+				handle: function(element,attribute,value)
+				{
+					swiss('#'+element.id).addClass('attr2');
+				}
+			});
+
+	</script>
+
+</body>
+</html>

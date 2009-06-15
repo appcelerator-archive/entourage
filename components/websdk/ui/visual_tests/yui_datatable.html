@@ -1,0 +1,244 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+</head>
+
+<body> 
+
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+
+			<div on="click then script[init()]">Initialize from plain markup</div>
+			<div on="click then script[selectRow()]">Select row 2</div>
+			<div on="click then script[unselectRow()]">Unselect row 2</div>			
+			<div on="click then script[deleteRow2()]">Delete row 2</div>
+			<div on="click then script[hideColumn0()]">Hide column 0</div>
+			<div on="click then script[showColumn0()]">Show column 0</div>
+			<div on="click then script[disable()]">Disable</div>	
+			<div on="click then script[enable()]">Enable</div>						
+
+		</div>
+		<div class="control">
+	
+			<!-- Start MarkUp-Managed version of Control -->	
+	
+			<div id="myDatatable1"> 
+			       <table> 
+			          <thead> 
+			              <tr> 
+			                  <th>AAA</th> 
+			                  <th>BBB</th> 
+			                  <th>CCC</th> 
+			              </tr> 
+			          </thead> 
+				        <tbody> 
+				            <tr> 
+				                <td>1</td> 
+				                <td>bbb</td> 
+				                <td>ccc</td> 
+				            </tr> 
+				            <tr> 
+				                <td>2</td> 
+				                <td>bbb</td> 
+				                <td>ccc</td> 
+				            </tr> 
+				            <tr> 
+				                <td>3</td> 
+				                <td>bbb</td> 
+				                <td>ccc</td> 
+				            </tr> 
+				        </tbody> 
+				    </table> 
+				</div>
+
+			<!-- End Control Code -->
+
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<!-- this is a set of tests in which an action (click), invokes a message sent to the control. 
+				in this case the messages are prefixed with an 'a' (a.*). -->
+
+				<div on="click then script[loadPapers()]">Load alternate data</div>
+				<div on="click then script[loadBooks()]">Load original data</div>
+				<div on="click then l:a.deleteRow2">Delete row 2</div>
+				<div on="click then l:a.deleteAll">Delete all rows</div>
+				<div on="click then l:a.deleteAllAfter1">Delete all rows after row 1</div>
+
+		</div>
+		<div class="control">
+
+			<!-- Start API-Managed version of Control  -->
+
+				<div control="yui_datatable[property=rows]" id="myDatatable2" caption="Sample Table" 
+				  on="l:a.paperorders then update 
+					or l:a.bookorders then update 
+					or l:a.deleteAll then deleteRows[row=0] 
+					or l:a.deleteAllAfter1 then deleteRows[row=2]
+					or l:a.deleteRow2 then deleteRow[row=2]">
+					<column key="id" formatter="numeric" sortable="true"></column>
+					<column key="date" formatter="date" sortable="true" draggable="true"></column>
+					<column key="quantity" formatter="numeric" sortable="true" draggable="true" label="Qty."></column>
+					<column key="amount" formatter="numeric" sortable="true" draggable="true"></column>
+					<column key="title" label="My Title" sortable="true" draggable="true"></column>
+				</div>
+		
+			<!-- End Control Code -->			
+	
+	
+		</div>		
+
+	</div>
+
+	<script>
+
+		// API-Managed version of Control...
+		
+		function init() {
+			
+			App.createControl(
+				'myDatatable1', 
+				'yui_datatable', 
+				{
+					property: "rows",
+					source: swiss("#myDatatable1 table").get(0),
+					responseSchema: { 
+						    fields: [{key:"AAA", parser:"number"}, 
+						            {key:"BBB"}, 
+						            {key:"CCC"} 
+						    ] 
+					},
+					columnDefs: [ 
+						    {key:"AAA", sortable: true, resizable: true}, 
+						    {key:"BBB"}, 
+						    {key:"CCC"} 
+					]
+				},
+				function() {
+						
+					this.addRow({"rows": {"AAA": "4", "BBB": "bbb", "CCC": "ccc"}, index: 1});
+
+				}
+			);
+		}
+
+		function selectRow()
+		{
+			// add a new listener for a message condaining data
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.selectRow({row: 2})
+				
+			});
+		}
+
+		function unselectRow()
+		{
+			// add a new listener for a message condaining data
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.unselectRow({row: 2})
+				
+			});
+		}
+		
+		function deleteRow2()
+		{
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.deleteRow(2);
+			});
+		}
+
+		function hideColumn0()
+		{
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.hideColumn(0);
+			});
+		}
+		
+		function showColumn0()
+		{
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.showColumn(0);
+			});
+		}		
+
+		function disable()
+		{
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.disable();
+			});
+		}
+
+		function enable()
+		{
+			App.getControl('myDatatable1', 'yui_datatable', function() {
+
+				this.undisable();
+			});
+		}
+		
+		// Various payloads that can be delivered...
+
+		function loadBooks() 
+		{
+			$MQ("l:a.bookorders", {
+				
+				rows: [
+			        {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing"},
+			        {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life"},
+			        {id:"po-0297", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
+			        {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice"}
+			    ]
+			});
+		}
+
+		function loadPapers() 
+		{
+			$MQ("l:a.paperorders", {
+
+			    rows: [
+			        {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"Nolan Wright Paper Company"},
+			        {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"Jeff Haynie Paper Products"},
+			        {id:"po-0297", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"Huglin Mifflin Office Suppiles and Paper"},
+			        {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Total Paper Solutions"}
+			    ]
+			});
+		}
+
+		$MQL("l:app.compiled", function() {
+
+			// loadBooks();
+		
+		});
+		
+		document.onselectstart = function() { return false; }
+		
+	</script>
+
+	
+</body>
+
+</html>

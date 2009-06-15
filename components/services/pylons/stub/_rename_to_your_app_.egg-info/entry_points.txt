@@ -1,0 +1,7 @@
+
+    [paste.app_factory]
+    main = _rename_to_your_app_.config.middleware:make_app
+
+    [paste.app_install]
+    main = pylons.util:PylonsInstaller
+    

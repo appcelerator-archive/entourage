@@ -1,0 +1,284 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+	<style>
+	.check
+	{
+		background:url(assets/accept.png) no-repeat;
+		cursor:pointer;
+	}
+	</style>
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:test[val=1]">Basic Tree</div>
+			<div on="click then l:test[val=2]">Add/Remove Nodes</div>
+		
+		</div>
+		<div class="control">
+			<div on="l:test[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>Basic Tree (markup) - using slide toggle effect</li>
+					<li>Basic Tree (JSON) - click on row to get title</li>
+					<li>Each tree has one node with a custom class/icon</li>
+				</ul>
+				<div style="margin:10px">Markup Tree</div>
+				<div  control="tree[toggleEffect=slideToggle]">
+					<div  title="Fred">
+						<div classname="check"  title="cars">
+							<div>ford</div>
+							<div>chevy</div>
+						</div>
+						<div  title="food"></div>
+						<div  title="cats">cats</div>
+					</div>
+					<div  title="Tom">
+						<div  title="cars">
+							<div>prius</div>
+							<div>bike</div>
+						</div>
+						<div  title="food">
+							<div>tacos</div>
+							<div>corn</div>
+						</div>
+						<div  title="cats">cats</div>
+					</div>
+				</div>
+				<script>
+				$MQL('l:tree',function(msg)
+				{
+					alert(msg.payload.title)
+				})
+				</script>
+				
+				<div style="margin:10px" on='l:tree[title=foo1] then effect[highlight]'>JSON Tree</div>
+				<div control="tree[property=rows,clickMessage=l:tree]" on="l:loadtree then render"></div>
+				
+				<script>
+				var d = [
+					{id:0,classname:'check',children:[
+						{id:1,title:'foo1',children:[
+							{id:2,title:'foo2'}
+							]},
+						{id:4,title:'foo4'},
+						{id:5,title:'foo5'}
+					]},
+					{id:6,title:'foo6',children:[
+						{id:7,title:'foo7',children:[
+							{id:8,title:'foo8'},
+							{id:9,title:'foo9'},
+							{id:10,title:'foo10'},
+							{id:11,title:'foo11'}
+
+							]},
+						{id:12,title:'foo12'},
+						{id:13,title:'foo13'}
+					]},
+					{id:14,title:'foo14'}
+				];
+
+				$MQL('l:app.compiled',function()
+				{
+					$MQ('l:loadtree',{rows:d})
+					
+				})
+				
+				</script>
+			</div>
+
+			<div on="l:test[val=2] then show else hide" style="display:none">
+				Test 2
+				<ul>
+					<li>Remove the first node from first tree - 
+						<a href="#" on="click then l:removenodes[index=fred]">remove</a></li>
+					<li>Add Nodes to second tree - 
+						<a href="#" on="click then l:addnode">add</a></li>
+				</ul>
+				<div style="margin:10px">Markup Tree</div>
+				<div  control="tree[toggleEffect=slideToggle]" on="l:removenodes then removeNode">
+					<div id="fred" title="Fred">
+						<div classname="check"  title="cars">
+							<div>ford</div>
+							<div>chevy</div>
+						</div>
+						<div  title="food"></div>
+						<div  title="cats">cats</div>
+					</div>
+					<div  title="Tom">
+						<div  title="cars">
+							<div>prius</div>
+							<div>bike</div>
+						</div>
+						<div  title="food">
+							<div>tacos</div>
+							<div>corn</div>
+						</div>
+						<div  title="cats">cats</div>
+					</div>
+				</div>
+				
+				<div style="margin:10px">JSON Tree</div>
+				<div control="tree[property=rows]" on="l:loadtree2 then render or l:add then addNode"></div>
+				
+				<script>
+
+				$MQL('l:addnode',function()
+				{
+					$MQ('l:add',{parent:null,node:{id:200,title:'1st new node',children:[{id:201,title:'new node child'}]}})
+					$MQ('l:add',{parent:100,node:{id:300,title:'3rd new node'}})
+					$MQ('l:add',{parent:null,node:{id:400,title:'2nd new node',children:[{id:401,title:'new node child'},{id:402,title:'new node child 2'}]}})
+					
+				})
+
+				var d = [
+					{id:100,classname:'check',children:[
+						{id:101,title:'foo1',children:[
+							{id:102,title:'foo2'}
+							]},
+						{id:104,title:'foo4'},
+						{id:105,title:'foo5'}
+					]},
+					{id:106,title:'foo6',children:[
+						{id:107,title:'foo7',children:[
+							{id:108,title:'foo8'},
+							{id:109,title:'foo9'},
+							{id:110,title:'foo10'},
+							{id:111,title:'foo11'}
+
+							]},
+						{id:112,title:'foo12'},
+						{id:113,title:'foo13'}
+					]},
+					{id:114,title:'foo14'}
+				];
+				$MQL('l:app.compiled',function()
+				{
+					$MQ('l:loadtree2',{rows:d})
+				});
+				</script>
+			</div>
+
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then l:test_api[val=1]">API 1</div>
+
+		</div>
+		<div class="control">
+			<div on="l:test_api[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>Create a tree from JS</li>
+					<li>Get an instance of a tree and change the data (should match first tree) - <a href="#" on="click then l:reload_data">reload</a></li>
+				</ul>
+			</div>
+			
+			<div style="margin:10px">JS Tree</div>
+			<div id="tree_1">
+			</div>
+
+			
+			<div style="margin:10px">Markup Tree changed via JS</div>
+			<div id="tree_2" control="tree[property=rows]">
+				<div title="one">
+					<div>two</div>
+					<div>three</div>
+				</div>
+				<div title="four">
+					<div>five</div>
+					<div>six</div>
+				</div>
+			</div>
+			
+			<script>
+			var inst;
+			App.getControl('tree_2','tree',function()
+			{
+				inst = this;
+			})
+			$MQL('l:reload_data',function(msg)
+			{
+				var d = [
+					{id:100,classname:'check',children:[
+						{id:101,title:'foo1',children:[
+							{id:102,title:'foo2'}
+							]},
+						{id:104,title:'foo4'},
+						{id:105,title:'foo5'}
+					]},
+					{id:106,title:'foo6',children:[
+						{id:107,title:'foo7',children:[
+							{id:108,title:'foo8'},
+							{id:109,title:'foo9'},
+							{id:110,title:'foo10'},
+							{id:111,title:'foo11'}
+
+							]},
+						{id:112,title:'foo12'},
+						{id:113,title:'foo13'}
+					]},
+					{id:114,title:'foo14'}
+				];
+				
+				inst.render({'rows':d});
+				
+			})
+			App.createControl('tree_1','tree',{property:'rows','toggleEffect':'slideToggle'},function()
+			{
+				var d = [
+					{id:100,classname:'check',children:[
+						{id:101,title:'foo1',children:[
+							{id:102,title:'foo2'}
+							]},
+						{id:104,title:'foo4'},
+						{id:105,title:'foo5'}
+					]},
+					{id:106,title:'foo6',children:[
+						{id:107,title:'foo7',children:[
+							{id:108,title:'foo8'},
+							{id:109,title:'foo9'},
+							{id:110,title:'foo10'},
+							{id:111,title:'foo11'}
+
+							]},
+						{id:112,title:'foo12'},
+						{id:113,title:'foo13'}
+					]},
+					{id:114,title:'foo14'}
+				];
+				
+				this.render({'rows':d});
+			})
+			
+			</script>
+		</div>
+	</div>
+
+
+	
+</body>
+
+</html>

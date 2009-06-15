@@ -1,0 +1,148 @@
+<html>
+<body>
+	<div on="click then hidden" id="hidden_test"></div>
+	<div on="click then hidden[id=hidden_target_test]" id="hidden_target"></div>
+	<div id="hidden_target_test"></div>
+	<div on="click then visible" style="visibility:hidden" id="visible_test"></div>
+	<div on="click then visible[id=visible_target_test]" id="visible_target"></div>
+	<div id="visible_target_test" style="visibility:hidden"></div>
+	<div on="click then hide"  id="hide_test"></div>
+	<div on="click then hide[id=hide_target_test]" id="hide_target"></div>
+	<div id="hide_target_test"></div>
+	<div on="click then show" style="display:none" id="show_test"></div>
+	<div on="click then show[id=show_target_test]" id="show_target"></div>
+	<div id="show_target_test" style="display:none"></div>
+	<div on="click then script[foo()]"  id="script_test"></div>
+	<div on="click then script[jQuery('#script_inline_test').hide()]"  id="script_inline_test"></div>
+
+	<input type="button" disabled="true" id="test_1" on ="click then enable"/>
+	<input type="button"  id="test_2" on ="click then disable"/>
+	<div id="test_3" on="click then reset">hello</div>
+	<div id="test_4" on="click then reset[id=test4_div]"></div>
+	<div id="test4_div">hello</div>
+	<input type="text" id="test_5" value="hello" on="click then clear"/>
+	<select id="test_6" on="click then reset">
+		<option value="1">one</option>
+		<option value="2" selected>two</option>
+	</select>
+	<form id="test_7" on="click then reset">
+		<input id="test_7a" type="text" value="hello" validator="required" decorator="required"/>
+		<input id="test_7b" type="test" value="hello" validator="required"/>
+		<select id="test_7c" validator="required">
+			<option value="">one</option>
+			<option value="2" selected>two</option>
+		</select>
+		<textarea id="test_7d" validator="required">hello</textarea>
+	</form>
+	<select id="test_8" on="l:optionTest then selectOption[value]">
+		<option value="1">one</option>
+		<option value="2">two</option>
+		<option value="3">three</option>
+	</select>
+	<select id="test_9" on="l:optionTest2 then selectOption[2]">
+		<option value="1">one</option>
+		<option value="2">two</option>
+		<option value="3">three</option>
+	</select>
+
+	<div id="test_10" on="click then set[class=foo,opacity=0.7]"></div>
+	<div id="test_11" on="click then set[foo=bar,joe=smith]"></div>
+	<div id="test_12" on="click then add[foo=bar,class=foo]"></div>
+	<div id="test_13" on="click then add[id=test_13a,foo=bar,class=foo]"></div>
+	<div id="test_13a"></div>
+	
+	<div class="foo" id="test_14" on="click then remove[class=foo]"></div>
+	<div class="foo" foo="bar" id="test_15" on="click then remove[class=foo,foo]"></div>
+	<div id="test_16" on="click then remove[id=test_16a,class=foo,foo]"></div>
+	<div class="foo" foo="bar" id="test_16a" ></div>
+	<div class="foo bar" foo="bar" bar="foo" id="test_17" on="click then remove[class=foo,class=bar,foo,bar]"></div>
+
+	<div id="test_18" on="click then toggle[class=foo]"></div>
+	<div id="test_19" style="display:none" on="click then toggle[display=inline]"></div>
+	<div id="test_20" on="click then toggle[visibility=hidden]" style="visibility:visible"> </div>
+	<div id="test_21" on="click then toggle[opacity=0.7]"></div>
+	<div id="test_22" on="click then toggle[foo=bar]"></div>
+	<div id="test_23" on="click then toggle[float=left]" style="float:right">
+		
+	<div id="test_24" on="click then value[bar]">foo</div>
+	<input id="test_25" type="text" on="click then value[bar]" value="foo"/>
+	<textarea id="test_26" on="click then value[bar]">foo</textarea>
+	<select id="test_27" on="l:select_value then value[property=rows,value=val,text=desc]"></select>
+	<div id="test_28" on="l:div_value then value[div]">foo</div>
+	<input id="test_29" on="l:input_value then value[input]" value="foo"/>
+	<textarea id="test_30" on="l:textarea_value then value[textarea]">foo</textarea>
+	<div id="test_31" on="l:div_value then value[append=true,div]">foo</div>
+	<input id="test_32" on="l:input_value then value[append=true,input]" value="foo"/>
+	<textarea id="test_33" on="l:textarea_value then value[append=true,textarea]">foo</textarea>
+	<select id="test_34" on="l:select_value2 then value[append=true,property=rows,value=val,text=desc]">
+		<option value="1">one</option>
+		<option value="2">two</option>
+		<option value="3">three</option>
+	</select>
+	<input type="text" id="test_35" on="click then value[fred]" validator="email" value="fred@gmail.com"/>
+	
+	<form id="test_37" on="l:form_value then value[user]">
+		<input type="text" id="name"/>
+		<input type="text" id="phone"/>
+		<select id="gender">
+			<option value="m">male</option>
+			<option value="f">female</option>
+		</select>
+		<input type="checkbox" id="agreed"/>
+		<input type="checkbox" checked="true" id="nope"/>
+
+		<textarea id="comments"></textarea>
+	</form>
+	<div id="test_38" on="click then statechange[test=one]"></div>
+	<div id="test_39" on="click then statechange[test=two]"></div>
+	<div id="test_40" on="click then statechange[test=three]"></div>
+	
+	<div id="test_38a" on="test[one] then set[class=active] else set[class=inactive] "></div>
+	<div id="test_39a" on="test[two] then set[class=active] else set[class=inactive] "></div>
+	<div id="test_40a" on="test[three] then set[class=active] else set[class=inactive] "></div>
+
+	<div id="test_41" on="click then focus[id=test_41a]"></div>
+	<input type="text" id="test_41a" on="focus then add[class=passed]"/>
+
+	<div id="test_42" on="click then blur[id=test_42a]"></div>
+	<input type="text" id="test_42a" on="blur then add[class=passed]"/>
+	
+	<input type="text" id="test_43" on="click then focus or focus then add[class=focus_passed] or dblclick then blur or blur then add[class=blur_passed]"/>
+	
+	<input type="text" id="test_44" on="click then select or select then add[class=passed]" value="foo"/>
+	
+	<form id="test_45" on="click then submit or submit then add[class=passed]">
+	</form>
+	
+	<div id="test_46" on="click then history[foo] or history[foo] then add[class=passed]"></div>
+	
+	<script>
+	if (window.App)
+	{
+		var x= new App.StateMachine('test');
+		x.addState('one','l:foo[name=foo,date=bar]',false);
+		x.addState('two','l:foo1',false);
+		x.addState('three','l:foo2',true);
+		
+	}
+	else
+	{
+		window.onload = function()
+		{
+			var x= new App.StateMachine('test');
+			x.addState('one','l:foo[name=foo,date=bar]',false);
+			x.addState('two','l:foo1',false);
+			x.addState('three','l:foo2',true);
+			
+		}
+	}
+		
+
+		function foo()
+		{
+			swiss('#script_test').hide();
+		}
+	</script>
+</body>
+</html>
+

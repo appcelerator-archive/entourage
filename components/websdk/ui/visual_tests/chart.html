@@ -1,0 +1,144 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:test[val=1]">Basic Charts</div>
+			<div on="click then l:test[val=2]">Basic Charts with Options</div>
+		
+		</div>
+		<div class="control">
+			<div on="l:test[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>3 charts: line, bar and pie</li>
+				</ul>
+				
+				<div control="chart[property=rows,type=line,height=400,width=400]" 
+					on="l:line_1 then execute " style="float:left">
+				</div>
+				<div control="chart[property=rows,type=bar]" on="l:bar_1 then render" style="float:left">
+				</div>
+				<div control="chart[property=rows,type=pie]" on="l:pie_1 then render " style="float:left">
+				</div>
+				
+				<script>
+				$MQL('l:app.compiled',function()
+				{
+					$MQ('l:line_1',{'rows':[{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}]});
+					$MQ('l:pie_1',{'rows':[{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}]});
+					$MQ('l:bar_1',{'rows':[{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}]});
+
+
+					$MQ('l:line_2',{'rows':[{'name':'open defects','value':'10,20,30'},{'name':'closed defects','value':'15,20,5'},{'name':'rejected defects','value':'5,3,7'}],'titles':[{'title':'critical'},{'title':'major'},{'title':'trivial'}]});
+					$MQ('l:pie_2',{'rows':[{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}]});
+					$MQ('l:bar_2',{'rows':[{'name':'open defects','value':'10,20,30'},{'name':'closed defects','value':'15,20,5'},{'name':'rejected defects','value':'5,3,7'}],'titles':[{'title':'critical'},{'title':'major'},{'title':'trivial'}]});
+
+
+					$MQ('l:bar_3',{'rows':[{'name':'open defects','value':'10,20,30'},{'name':'closed defects','value':'15,20,5'},{'name':'rejected defects','value':'5,3,7'}],'titles':[{'title':'critical'},{'title':'major'},{'title':'trivial'}]});
+
+				});
+				
+				
+				</script>
+			</div>
+			<div on="l:test[val=2] then show else hide" style="display:none">
+				Test 1
+				<ul>
+					<li>3 charts: line, bar and pie</li>
+					<li>Pie has 0 radius - no hole and a legend</li>
+					<li>Bar chart has 0 degree angle (looks flat)</li>
+					<li>Line chart has custom background color and indicator=true (show line value tooltip)</li>
+					<li>Reload chart data for line chart <a href="#" on="click then l:reload">reload</a>
+				</ul>
+				
+				<div control="chart[property=rows,type=line,height=400,width=400,background-color=#ffffcc,oneBalloon=true,chartTitles=titles,indicator=true]" 
+					on="l:line_2 then execute " style="float:left">
+				</div>
+				<div control="chart[property=rows,type=bar,angle=0]" on="l:bar_2 then render" style="float:left">
+				</div>
+				<div control="chart[property=rows,type=pie,innerRadius=0,legend=true,chartTitles=titles]" on="l:pie_2 then render " style="float:left">
+				</div>
+				
+				<script>
+				$MQL('l:reload',function(msg)
+				{
+					$MQ('l:line_2',{'rows':[{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}]});
+					
+				});
+				
+				</script>
+			</div>
+			
+
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then l:test_api[val=1]">API 1</div>
+
+		</div>
+		<div class="control">
+			<div on="l:test_api[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>Create chart from markup and load data</li>
+					<li>Get instance of a chart and reload its data - <a href="#" on="click then l:api_load">load</a></li>
+					
+				</ul>
+				<div id="api_chart_2" control="chart[property=rows,type=bar,angle=0]" 
+					on="l:bar_3 then render" style="float:left">
+				</div>
+
+				<div id="api_chart_1"></div>
+				<script>
+				
+				App.createControl('api_chart_1','chart',{type:'bar',property:'rows'},function()
+				{
+					var d = [{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}]
+					this.render({'rows':d})
+				});
+				var inst;
+				App.getControl('api_chart_2','chart',function()
+				{
+					inst = this;
+				})
+				$MQL('l:api_load',function()
+				{
+					var d = [{name:'coke',value:10},{name:'pepsi',value:5},{name:'tab',value:3}];
+					inst.render({'rows':d})
+				})
+				</script>
+				
+			</div>
+		</div>
+	</div>
+
+
+	
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then script[init()]">Create datepicker from text field</div>
+			<div on="click then l:m.enableDatepicker">Enable</div>
+			<div on="click then l:m.disableDatepicker">Disable</div>
+			<div on="click then l:m.hideDatepicker">Hide the datepicker</div>
+			<div on="click then l:m.showDatepciker">Show the datepicker</div>
+			<div on="click then l:m.setDatepicker">set the selected date</div>
+		
+		</div>
+		<div class="control">
+	
+			<!-- Start MarkUp-Managed version of Control -->	
+		
+			The Date: <input id="myDatePicker1" control="jquery_datepicker[duration=slow,defaultDate=+7]" 
+				on="l:m.enableDatepicker then enable
+					or l:m.disableDatepicker then disable
+					or l:m.showDatepciker then show
+					or l:m.hideDatepicker then hide
+					or l:m.setDatepicker then setDate[date='02/03/2009']">
+			
+			<!-- End Control Code -->
+		
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then script[init()]">Create datepicker from text field</div>
+			<div on="click then script[enable()]">Enable</div>
+			<div on="click then script[disable()]">Disable</div>
+			<div on="click then script[isDisabled()]">check if the datepicker is disabled</div>
+			<div on="click then script[hide()]">Hide the datepicker</div>
+			<div on="click then script[show()]">Show the datepicker</div>
+			<div on="click then script[getDate()]">get the selcted date</div>
+			<div on="click then script[setDate()]">set the selected date</div>							
+
+		</div>
+		<div class="control">
+			
+			<!-- Start API-Managed version of Control  -->
+		
+				The Date: <input id="myDatePicker2">
+		
+			<!-- End Control Code -->			
+			
+		</div>		
+		
+	</div>
+
+	<script>
+ 					
+		// API-Managed version of Control...
+		
+		function init() {
+			
+			App.createControl(
+				'myDatePicker2', 
+				'jquery_datepicker', 
+				{
+					property: "rows"
+				},
+				function() {
+						
+					this.setDate(new Date(2009, 1, 24), new Date(2009, 2, 27));					
+
+				}
+			);
+		}
+		
+		function enable()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.enable();
+
+			});			
+		}
+		
+		function disable()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.disable();
+
+			});			
+		}
+		
+		function isDisabled()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				alert(this.isDisabled());
+
+			});			
+		}
+		
+		function option()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.option({settings: {prevText: "<< PREVIOUS", nextText: "NEXT >>"}});
+
+			});			
+		}
+		
+		function dialog()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.dialog("12/12/2012", function() { alert('x'); }, {});
+
+			});			
+		}
+		
+		function hide()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.hide();
+
+			});			
+		}
+		
+		function show()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.show();
+
+			});			
+		}
+		
+		function getDate()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				alert(this.getDate());
+
+			});			
+		}
+		
+		function setDate()
+		{
+			App.getControl('myDatePicker2', 'jquery_datepicker', function() {
+
+				this.setDate({ date: new Date(1980, 1, 24), endDate: new Date(1980, 5, 27)});
+
+			});			
+		}
+		
+	</script>
+
+	
+</body>
+
+</html>

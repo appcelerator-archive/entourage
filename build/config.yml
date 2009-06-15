@@ -1,0 +1,60 @@
+---
+:version: "3.0.1"
+:name: entourage
+:licenses: [6]
+:releases:
+  :runtime:
+      :win32:
+      :osx:
+      :unix:
+      :update:
+  :service:
+      :appengine:
+        :dependencies: [{type: websdk, name: websdk}]
+      :django:
+        :dependencies: [{type: websdk, name: websdk}]
+      :dotnet:
+        :dependencies: [{type: websdk, name: websdk}]
+      :grails:
+        :dependencies: [{type: websdk, name: websdk}]
+      :java:
+        :dependencies: [{type: websdk, name: websdk}]
+      :spring:
+        :dependencies: [{type: websdk, name: websdk}]
+      :merb:
+        :dependencies: [{type: websdk, name: websdk}]
+      :mochiweb:
+        :dependencies: [{type: websdk, name: websdk}]
+      :mule:
+        :dependencies: [{type: websdk, name: websdk}]
+      :perl:
+        :dependencies: [{type: websdk, name: websdk}]
+      :php:
+        :dependencies: [{type: websdk, name: websdk}]
+      :pylons:
+        :dependencies: [{type: websdk, name: websdk}]
+      :rails:
+        :dependencies: [{type: websdk, name: websdk}]
+      :struts:
+        :dependencies: [{type: websdk, name: websdk}]
+      :titanium:
+        :dependencies: []
+      :websdk:
+        :dependencies: [{type: websdk, name: websdk}]
+      :zend:
+        :dependencies: [{type: websdk, name: websdk}]
+  :websdk:
+    :websdk:
+      :dependencies: 
+        - {type: widget, name: app:calendar}
+        - {type: widget, name: app:chart}
+        - {type: widget, name: app:content}
+        - {type: widget, name: app:datatable}
+        - {type: widget, name: app:folder}
+        - {type: widget, name: app:http}
+        - {type: widget, name: app:if}
+        - {type: widget, name: app:iterator}
+        - {type: widget, name: app:message}
+        - {type: widget, name: app:script}
+        - {type: widget, name: app:statemachine}
+        - {type: widget, name: app:upload}

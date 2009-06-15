@@ -1,0 +1,157 @@
+#!/usr/bin/env ruby
+# Copyright 2006-2008 Appcelerator, Inc.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#    http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License. 
+
+require 'fileutils'
+
+Signal.trap("INT") { puts; exit }
+
+def is_gem_installed(gem)
+  installed = Gem.cache.search gem
+  return !installed.empty?
+end
+
+def check_required_gem(gem,array)
+  if not is_gem_installed gem
+    array << gem
+  end
+end
+
+def check_for_initial
+  
+  install_file = home_path 'releases','.installed'
+  return nil if File.exists? install_file and not INSTALLING
+  
+  if not WIN32 and not system 'gem --version >/dev/null'
+    STDERR.puts "Appcelerator requires RubyGems to be installed and in your path."
+    STDERR.puts "Please re-install RubyGems and you will be able to re-run this."
+    STDERR.puts "If you have RubyGems already installed, please ensure that it's on your path"
+    exit 1
+  end
+  
+  # ensure we have the right gems installed
+  gems = []
+  
+  require 'rubygems'
+  
+  REQUIRED_GEMS.each do |gem|
+    check_required_gem gem,gems
+  end
+  
+#  check_required_gem 'mongrel_service',gems if WIN32
+  
+  if not gems.empty?
+    if not FORCE_INSTALL and not INSTALLING
+      STDOUT.puts
+      STDOUT.puts "Appcelerator requires the following component#{gems.length > 1 ? 's' : ''}: \n"
+      STDOUT.puts
+      STDOUT.puts "  > " + gems.join("\n  > ")
+      STDOUT.puts
+      STDOUT.print "Attempt to auto-install? [Yn] "
+      c = STDIN.getc
+      if not [10,89,121].include? c
+        STDOUT.puts
+        STDOUT.puts "Cancelled!"
+        exit 1
+      end
+    end
+    
+    subprocess = (ARGV.include? '--subprocess')
+    gems.each do |gem|
+      cmd = "#{GEM_CMD} install #{gem} -y"
+      if not WIN32
+        # run in a sub-shell so we don't 
+        # create root-owned files later
+        cmd = "sudo sh -c '#{cmd}'"
+        puts "__MAGIC__|ask|Please enter your password to install required Ruby Gems|true|__MAGIC__" if subprocess
+      end
+      puts "Executing: #{cmd}"
+      system cmd
+  
+      # NOTE: for some reason, gem doesn't exit with non-zero when unsuccessful
+      check_cmd = %x[#{GEM_CMD} list #{gem}]
+      
+      if not check_cmd =~ Regexp.new('\s'+gem+'\s')
+        STDERR.puts "Gem #{gem} doesn't look like it installed correctly."
+        exit 1
+      end
+    end
+    
+    STDOUT.puts "Dependencies have been successfully installed..."
+    STDOUT.puts
+    
+  end
+  
+  # write out our file
+  FileUtils.mkdir_p File.join(TARGET_DIR,'releases')
+  f = File.new install_file,'w+'
+  f.puts Time.now.to_s
+  f.close
+  
+  FileUtils.cp File.join(SYSTEMDIR,'build.yml'), home_path('build.yml')
+  
+end
+
+def check_for_migration
+  path = File.join(SYSTEMDIR,'releases','login.yml')
+  migration = home_path('releases','.migrated-1.2.0')
+  if File.exists? path and not File.exists? migration
+    # we need to migrate from old version to new version of runtime
+    FileUtils.cp path, home_path('releases','login.yml')
+    FileUtils.touch migration
+    if File.writable? path
+      FileUtils.rm_rf path
+    end
+  end
+end
+
+REQUIRED_GEMS = %w(rubyzip)
+MYFILE = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+SYSTEMDIR = File.dirname(MYFILE)
+
+require File.join(SYSTEMDIR,'lib','util.rb')
+
+TARGET_DIR = home_path
+UPDATE_DIR = home_path 'updates'
+WIN32 = !(RUBY_PLATFORM =~ /(windows|win32)/).nil?
+GEM_CMD = WIN32 ? 'gem.bat' : 'gem'
+FORCE_INSTALL = ARGV.first == '--force-update'
+INSTALLING = ARGV.first == '--install'
+
+
+def run
+  check_for_initial
+  
+  if INSTALLING
+    exit 0
+  end
+  
+  check_for_migration
+
+  console_rb = File.join(SYSTEMDIR,'console.rb')
+  if WIN32
+    args = ['ruby', console_rb] + ARGV + ['--home', TARGET_DIR, '--system', SYSTEMDIR]
+  else
+    args = ['ruby', console_rb] + ARGV + ["--home=\"#{TARGET_DIR}\"","--system=\"#{SYSTEMDIR}\""]
+  end
+  
+  if exec *args
+    exit 0
+  else
+    exit $?.exitstatus
+  end
+
+end
+
+run

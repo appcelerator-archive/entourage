@@ -1,0 +1,121 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:m.setProgressbar75">Set Progressbar position to 75</div>
+			<div on="click then l:m.setProgressbar20">Set Progressbar position to 20</div>			
+			<div on="click then l:m.disable">Disable</div>
+			<div on="click then l:m.enable">Enable</div>
+		
+		</div>
+		<div class="control">
+	
+			<!-- Start MarkUp-Managed version of Control -->	
+
+			<div control="jquery_progressbar[value=20]" id="myProgressbar1" 
+				on="l:m.setProgressbar75 then value[75]
+					or l:m.setProgressbar20 then value[20]
+					or l:m.disable then disable
+					or l:m.enable then enable">
+			</div>
+		
+			<!-- End Control Code -->
+		
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then script[init()]">Create the Progressbar</div>
+			<div on="click then script[value(20)]">Position at 20</div>
+			<div on="click then script[value(66)]">Position at 66</div>			
+			<div on="click then script[disable()]">Disable</div>
+			<div on="click then script[enable()]">Enable</div>
+
+		</div>
+		<div class="control">
+		
+			<!-- Start API-Managed version of Control  -->
+		
+				<div id="myProgressbar2"></div>
+		
+			<!-- End Control Code -->			
+			
+		</div>		
+		
+	</div>
+
+	<script>
+ 					
+		// API-Managed version of Control...
+
+		function init()
+		{	
+			App.createControl(
+				'myProgressbar2', 
+				'jquery_progressbar', 
+				{
+				},
+				function() {
+				
+					this.value(20);
+				
+				}
+			);
+
+		}		
+		
+		function value(n)
+		{
+			App.getControl('myProgressbar2', 'jquery_progressbar', function() {
+				
+				this.value(n);
+			});
+		}
+		
+		function disable()
+		{
+			App.getControl('myProgressbar2', 'jquery_progressbar', function() {
+
+				this.disable();
+				
+			});
+		}
+		
+		function enable()
+		{
+			App.getControl('myProgressbar2', 'jquery_progressbar', function() {
+
+				this.enable();
+				
+			});
+		}				
+		
+	</script>
+
+	
+</body>
+
+</html>

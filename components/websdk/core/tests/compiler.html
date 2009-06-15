@@ -1,0 +1,64 @@
+<html>
+<body>
+	<script>
+	
+	// IE crap requires window onload
+	if (window.App)
+	{
+
+			App.Compiler.registerAttributeProcessor(['span','p'],'attr1',
+			{
+				handle: function(element,attribute,value)
+				{
+					swiss('#'+element.id).addClass('attr1');
+				}
+			});
+			App.Compiler.registerAttributeProcessor('*','attr2',
+			{
+				handle: function(element,attribute,value)
+				{
+					swiss('#'+element.id).addClass('attr2');
+				}
+			});
+
+		
+	}
+	else
+	{
+		window.onload = function()
+		{
+			App.Compiler.registerAttributeProcessor(['span','p'],'attr1',
+			{
+				handle: function(element,attribute,value)
+				{
+
+					swiss('#'+element.id).addClass('attr1');
+				}
+			});
+			App.Compiler.registerAttributeProcessor('*','attr2',
+			{
+				handle: function(element,attribute,value)
+				{
+					swiss('#'+element.id).addClass('attr2');
+				}
+			});
+
+		};
+		
+	}
+	</script>
+
+	<div attr1="div"></div>
+	<span attr1="span"></span>
+	<p attr1="paragraph"></p>
+	<b attr1="bold"></b>
+	<input attr1="input"/>
+	<div attr2="div"></div>
+	<span attr2="span"></span>
+	<p attr2="paragraph"></p>
+	<b attr2="bold"></b>
+	<input attr2="input"/>
+
+</body>
+</html>
+

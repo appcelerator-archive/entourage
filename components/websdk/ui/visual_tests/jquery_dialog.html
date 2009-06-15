@@ -1,0 +1,149 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+
+			<div on="click then l:m.close">Close the dialog</div>		
+			<div on="click then l:m.open">Open the Dialog</div>
+			<div on="click then script[isOpen()]">Is it open?</div>
+		
+		</div>
+		<div class="control">
+	
+			<!-- Start MarkUp-Managed version of Control -->	
+
+			<div control="jquery_dialog[title=Hello, content=bla bla bla]" id="myDialog1" 
+				on="l:m.open then open
+					or l:m.close then close">
+			</div>
+		
+			<!-- End Control Code -->
+		
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then script[init()]">Create the Dialog</div>
+			<div on="click then script[title()]">Change the title</div>
+			<div on="click then script[content()]">Change the content</div>			
+			<div on="click then script[close()]">Close the Dialog</div>
+			<div on="click then script[open()]">Open the Dialog</div>
+			<div on="click then script[loadURL()]">Load URL content</div>
+
+		</div>
+		<div class="control">
+		
+			<!-- Start API-Managed version of Control  -->
+		
+				<div id="myDialog2">
+					<div style="padding:10px;background-color:#ffffcc;height:30px;width:200px">
+						content
+					</div>
+				</div>
+		
+			<!-- End Control Code -->			
+			
+		</div>		
+		
+	</div>
+
+	<script>
+ 					
+		// API-Managed version of Control...
+
+		function init()
+		{	
+			App.createControl(
+				'myDialog2', 
+				'jquery_dialog', 
+				{
+					buttons: {}
+				},
+				function() {
+				
+				
+				}
+			);
+
+		}
+		
+		function open()
+		{
+			App.getControl('myDialog2', 'jquery_dialog', function() {
+
+				this.open();
+				
+			});
+		}
+
+		function isOpen()
+		{
+			App.getControl('myDialog1', 'jquery_dialog', function() {
+
+				alert(this.isOpen());
+				
+			});
+		}
+		
+		function close()
+		{
+			App.getControl('myDialog2', 'jquery_dialog', function() {
+				
+				this.close();
+				
+			});
+		}	
+					
+		function title()
+		{
+			App.getControl('myDialog2', 'jquery_dialog', function() {
+
+				this.title("New Title!");
+				
+			});
+		}
+
+		function loadURL()
+		{
+			App.getControl('myDialog2', 'jquery_dialog', function() {
+
+				this.loadURL('assets/content1.html');
+				
+			});
+		}
+		
+		function content()
+		{
+			App.getControl('myDialog2', 'jquery_dialog', function() {
+
+				this.content("New Content!");
+				
+			});
+		}		
+	</script>
+
+	
+</body>
+
+</html>

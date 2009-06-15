@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================== -->
+<!-- Appcelerator Project Build                                           -->
+<!-- ==================================================================== -->
+<project name="build-appcelerator" default="dist" basedir=".">
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+	<target name="dist" depends="banner,clean,init,compile,war" description="* Builds the service and application deployment archives">
+	</target>
+	<target name="banner">
+		<echo>Appcelerator Open Web Platform for Java</echo>
+		<echo>Licensed under the Apache License, Version 2</echo>
+		<echo>Please see COPYING for more details on license requirements</echo>
+	</target>
+	<target name="compile" description="Compiles the Java code" depends="init,pre_compile,execute_compile,post_compile">
+	</target>
+	<target name="war" description="Builds the deployed war" depends="banner,execute_war">
+	</target>
+	<target name="execute_compile" description="Compiles the Java code" depends="init,pre_compile">
+		<mkdir dir="${stage.dir}/java/classes"/>
+		<mkdir dir="${stage.dir}/lib"/>
+		<javac debug="true" srcdir="${services.dir}" destdir="${stage.dir}/java/classes" classpathref="classpath" includeAntRuntime="false"/>
+		<javac debug="true" srcdir="${src.java.dir}" destdir="${stage.dir}/java/classes" classpathref="classpath" includeAntRuntime="false"/>
+		<jar destfile="${stage.dir}/lib/${app.name}-${version.major}.${version.minor}.${version.rev}.jar">
+			<fileset dir="${stage.dir}/java/classes">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${src.java.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="build.properties"/>
+			</fileset>
+		</jar>
+	</target>
+	<target name="execute_war" depends="banner,pre_war,compile,post_war">
+		<war destfile="${stage.dir}/${app.name}.war" webxml="config/WEB-INF/web.xml">
+			<lib dir="${lib.dir}" includes="*.jar"/>
+			<lib dir="${lib.dir}/compiler" includes="xerces-*.jar,xml-apis-*.jar"/>
+			<lib dir="stage/lib" includes="*.jar"/>
+			<fileset dir="${web.dir}" includes="**/*"/>
+			<fileset dir="${src.war.dir}" includes="**/*"/>
+			<zipfileset dir="${config.dir}/META-INF" includes="**/*" prefix="META-INF"/>
+			<zipfileset dir="${config.dir}/classes" includes="**/*" prefix="WEB-INF/classes"/>
+		</war>
+	</target>
+	<target name="clean">
+		<delete dir="${stage.dir}"/>
+	</target>
+	<target name="init">
+		<mkdir dir="${stage.dir}"/>
+	</target>
+	<target name="pre_compile" depends="">
+		<input message="huh?"/>
+	</target>
+	
+</project>

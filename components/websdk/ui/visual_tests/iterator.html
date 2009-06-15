@@ -1,0 +1,248 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+	<style>
+	.iterator_row
+	{
+		border:1px solid #ccc;
+		background-color:#eee;
+		margin:10px;
+		padding:5px;
+	}
+	.light
+	{
+		background-color:#ffffcc;
+	}
+	.red
+	{
+		color:red;
+	}
+	.blue
+	{
+		color:blue;
+	}
+	</style>
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:test[val=1]">Basic Iterator</div>
+			<div on="click then l:test[val=2]">Nested Iterator</div>
+			<div on="click then l:test[val=3]">Embedded JS</div>
+		
+		</div>
+		<div class="control">
+			<div on="l:test[val=1] then show else hide" style="display:none">
+				Test 1
+				<ul>
+					<li>Basic iterator with message-based property</li>
+					<li>First test should show 2 rows</li>
+					<li>Reload test should show 3 rows - <a href="#" on="click then l:test1a">Reload Data</a></li>
+					<li>Clicking each row should alert the name</li>
+				</ul>
+				
+				<div control="iterator[property=rows]" on="l:iterator_1 then render ">
+					<div class="iterator_row">
+						<div on="click then script[alert('#{name}')]">#{name}</div>
+					</div>
+				</div>
+				
+				Test 2
+				<ul>
+					<li>Basic iterator with hard-coded items</li>
+					<li>Test should show 3 rows</li>
+					<li>Clicking each row should alert the name</li>
+				</ul>
+				<div control="iterator" items="fred,jim,bob">
+					<div class="iterator_row">
+						<div on="click then script[alert('#{iterator_value}')]">#{iterator_value}</div>
+					</div>
+				</div>
+			</div>
+			<div on="l:test[val=2] then show else hide" style="display:none">
+				Test 1
+				<ul>
+					<li>Nested iterator using items as array var</li>
+					<li>Test should show 2 rows with 2 nested rows</li>
+					<li>Reload test should show 3 rows with 2 nested rows 
+						- <a href="#" on="click then l:test2a">Reload Data</a>
+					</li>
+					
+					<li>Clicking each row should alert the name</li>
+				</ul>
+				<div control="iterator[property=rows]" on="l:iterator_2 then render">
+					<div class="iterator_row">
+						<div on="click then script[alert('#{name}')]">#{name}</div>
+						<div control="iterator" items="#{cars}">
+							<div class="iterator_row light" on="click then script[alert('#{car}')]">#{car}</div>
+						</div>
+					</div>
+				</div>
+				
+				Test 2
+				<ul>
+					<li>Nested iterator using items with hard-coded values</li>
+					<li>Test should show 2 rows with 2 nested rows</li>
+					<li>Clicking each row should alert the name</li>
+				</ul>
+				<div control="iterator[property=rows]" on="l:iterator_3 then render">
+					<div class="iterator_row">
+						<div on="click then script[alert('#{name}')]">#{name}</div>
+						<div control="iterator" items="monday,tuesday">
+							<div class="iterator_row light" 
+								on="click then script[alert('#{iterator_value}')]">
+								#{iterator_value}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div on="l:test[val=3] then show else hide" style="display:none">
+				Test 1
+				<ul>
+					<li>Iterator with script that conditionally shows content based on data value</li>
+					<li>Conditional content should not be visible for 'fred'</li>
+					<li>It also adds a class based on whether row is odd or even (red is odd)				
+					<li>Clicking each row should alert the name</li>
+				</ul>
+				<div control="iterator[property=rows]" on="l:iterator_4 then render">
+					<div id="parent_#{iterator_index}" class="iterator_row">
+						<div on="click then script[alert('#{name}')]">#{name}</div>
+						<div id="conditional_#{iterator_index}">
+							I am conditional content
+						</div>
+						<script>
+							if ('#{name}' == 'fred')
+							{
+								swiss('#conditional_#{iterator_index}').css('display','none');
+							}
+							if ((parseInt('#{iterator_index}')%2)==0)
+							{
+								swiss('#parent_#{iterator_index}').addClass('red')
+							}
+							else
+							{
+								swiss('#parent_#{iterator_index}').addClass('blue')
+							}
+						</script>
+					</div>
+				</div>
+				
+			</div>
+				
+				
+				<script>
+				$MQL('l:test',function(msg)
+				{
+					$MQ('l:iterator_1',{'rows':[{name:'fred'},{name:'joe'}]})
+
+				})
+				$MQL('l:test1a',function(msg)
+				{
+					$MQ('l:iterator_1',{'rows':[{name:'julie'},{name:'danny'},{name:'jack'}]})
+
+				})
+				$MQL('l:test2a',function(msg)
+				{
+					$MQ('l:iterator_2',{'rows':[
+						{name:'fred',cars:[{'car':'lexus'},{'car':'bmw'}]},
+						{name:'jim',cars:[{'car':'ford'},{'car':'jimmy'}]},
+						{name:'joe',cars:[{'car':'acura'},{'car':'ford'}]}
+
+					]})
+
+				})
+
+				$MQL('l:test',function(msg)
+				{
+					$MQ('l:iterator_2',{'rows':[
+						{name:'fred',cars:[{'car':'lexus'},{'car':'bmw'}]},
+						{name:'joe',cars:[{'car':'acura'},{'car':'ford'}]}
+
+					]})
+					$MQ('l:iterator_3',{'rows':[
+						{name:'fred'},
+						{name:'joe'}
+					]})
+
+					$MQ('l:iterator_4',{'rows':[
+						{name:'fred'},
+						{name:'joe'},
+						{name:'tom'}
+					]})
+
+				})
+				</script>
+
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then l:test_api[val=1]">API 1</div>
+
+		</div>
+		<div class="control">
+			<div on="l:test_api[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>Basic iterator with message-based property</li>
+					<li>First test should show 3 rows</li>
+					<li>Load rows via API (3 rows)- <a href="#" on="click then l:testapi1">load</a></li>
+					<li>Clicking each row should alert the name</li>
+				</ul>
+				
+				<div id="api_1" control="iterator[property=rows]" on="l:iterator_5 then execute ">
+					<div class="iterator_row">
+						<div on="click then script[alert('#{name}')]">#{name}</div>
+					</div>
+				</div>
+				
+				<script>
+				$MQ('l:iterator_5',{'rows':[
+					{name:'fred'},
+					{name:'joe'},
+					{name:'tom'}
+				]})
+				
+					var inst = null;
+					App.getControl('api_1','iterator',function()
+					{
+						inst=this;
+					})
+
+					$MQL('l:testapi1',function()
+					{
+						var d =[{name:'api_1'},{name:'api_2'},{name:'api_3'}];
+						inst.render({'rows':d})
+					})
+					
+				</script>
+			</div>
+		</div>
+	</div>
+
+
+	
+</body>
+
+</html>

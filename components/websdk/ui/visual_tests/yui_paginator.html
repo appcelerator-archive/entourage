@@ -1,0 +1,92 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:test[val=1]">Basic Pagination</div>
+			<div on="click then l:test[val=2]">Configure via API</div>
+			<div on="click then l:test[val=3]">Configure via Message</div>
+			<div on="click then l:test[val=4]">Show Click Message Values</div>
+		
+		</div>
+		<div class="control">
+			<div on="l:test[val=1] then show else hide">
+				
+				<div control="yui_paginator[rowsPerPage=5,totalRecords=100,initialPage=3]">
+					<h3>5 Per Page, 100 Total Records, Start at 3</h3>
+					<p style="background-color:#ccc;padding:10px;font-weight:bold">{CurrentPageReport}</p>
+					<p >{PreviousPageLink} {PageLinks} {NextPageLink} </p>
+				</div>
+			</div>
+			<div on="l:test[val=2] then show else hide" style="display:none">
+			
+				<div id="pager" 	
+					control="yui_paginator">
+					<h3>20 Per Page, 250 Total Records, Start at 2</h3>
+					<p style="background-color:#ccc;padding:10px;font-weight:bold">{CurrentPageReport}</p>
+					<p >{PreviousPageLink} {PageLinks} {NextPageLink} </p>
+				</div>
+				<script>
+				App.getControl('pager','yui_paginator',function()
+				{
+					this.update({rowsPerPage:20,page:2,totalRecords:250});
+				})
+				</script>
+			</div>
+			<div on="l:test[val=3] then show else hide" style="display:none">
+			
+				<div control="yui_paginator" on="l:paginate then update">
+					<h3>5 Per Page, 20 Total Records, Start at 3</h3>
+					<p style="background-color:#ccc;padding:10px;font-weight:bold">{CurrentPageReport}</p>
+					<p >{PreviousPageLink} {PageLinks} {NextPageLink} </p>
+				</div>
+			</div>
+
+			<div on="l:test[val=4] then show else hide" style="display:none">
+			
+				<div control="yui_paginator[message=l:page]" on="l:paginate2 then update">
+					<h3>5 Per Page, 200 Total Records, Start at 2</h3>
+					<p style="background-color:#ccc;padding:10px;font-weight:bold">{CurrentPageReport}</p>
+					<p >{PreviousPageLink} {PageLinks} {NextPageLink} </p>
+				</div>
+				<div >
+					<div>Click Info</div>
+					<div>page: <span on="l:page then value[page]"></span></div>
+					<div>rows per page: <span on="l:page then value[rowsPerPage]"></span></div>
+					<div>record offset: <span on="l:page then value[recordOffset]"></span></div>
+					<div>total records: <span on="l:page then value[totalRecords]"></span></div>
+
+				</div>		
+				<script>
+				$MQL('l:app.compiled',function()
+				{
+					$MQ('l:paginate2',{'rowsPerPage':5,'page':2,'totalRecords':200})
+					$MQ('l:paginate',{'rowsPerPage':5,'page':3,'totalRecords':20})
+
+				})
+				</script>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

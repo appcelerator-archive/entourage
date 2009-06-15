@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+	<title>TestMonkey Driver</title>
+	<link rel="stylesheet" type="text/css" media="screen" charset="utf-8"
+	    href="testmonkey/public/stylesheets/driver.css"/>
+
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+	
+	<script type="text/javascript" charset="utf-8"
+	    src="testmonkey/public/javascripts/testmonkey.js"></script>
+	<script type="text/javascript" charset="utf-8"
+	    src="testmonkey/public/javascripts/driver.js"></script>
+
+</head>
+<body id="body">
+	<h1><span>TestMonkey</span></h1>
+	<div id="selector">
+		Test suite: <select id="suites"></select>
+		<button id="run">Run</button>
+		<button id="runall">Run All</button>
+	</div>
+	<div id="summary" style="display:none">
+		<div>
+			Running <span class="testcounts" id="suite_count"></span> suites
+			<span class="testcounts" id="test_count"></span> tests with 
+			<span class="testcounts" id="assert_count"></span> assertions
+		</div>
+		<div style="margin-top:20px;" id="status_bar_title">Assertion Meter:</div>
+		<div id="status_bar" class="status_bar" style="margin-top:5px;margin-bottom:0px"></div>
+	</div>
+	
+	<div style="margin-top:20px;margin-bottom:10px;display:none" id="test_summary_title">Test Suite Summary:</div>
+	<div id="results">
+		<div class="intro">Select a test suite above and Run.... or Run All</div>
+	</div>
+	<iframe style='position:absolute;left:-10px;top:-10px;height:1px;width:1px;'></iframe>
+</body>
+</html>

@@ -1,0 +1,203 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" style="display: block" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+
+			<div on="click then l:m.disableAll">Disable all</div>
+			<div on="click then l:m.enableAll">Enable all</div>
+			<div on="click then l:m.activate0">Activate row 0</div>			
+			<div on="click then l:m.activate1">Activate row 1</div>
+			<div on="click then l:m.activate2">Activate row 2</div>			
+			<div on="click then l:m.content">Activate row 1, then<br/>Change Row 1 Content</div>
+			<div on="click then l:m.newTitle">Change title row 2</div>
+			<div on="click then l:m.hideAcc">Hide accordion</div>
+			<div on="click then l:m.showAcc">Show accordion</div>
+			<div on="click then l:m.loadHTML">Activate row 2, then<br/>load html from remote</div>
+		
+		</div>
+		<div class="control">
+	
+			<!-- Start MarkUp-Managed version of Control -->	
+		
+			<div control="jquery_accordion" id="myAccordion1" 
+										on="l:m.hideAcc then hide 
+											or l:m.showAcc then show  
+											or l:m.disableAll then disable 
+											or l:m.enableAll then enable
+											or l:m.activate0 then activate[index=0]											 
+											or l:m.activate1 then activate[index=1]
+											or l:m.activate2 then activate[index=2]											
+											or l:m.content then activate[index=1] and content[index=1, value=myContent] 
+											or l:m.newTitle then title[index=2, value='Hello, World'] 
+											or l:m.removeFirst then remove[index=0] 
+											or l:m.loadHTML then activate[index=2] and loadHTML[index=2, url='assets/content1.html']">
+									
+				<div id="head1" title="Header 0">
+
+					Contrary to popular belief, Lorem Ipsum is not simply random text. 
+					It has roots in a piece of classical Latin literature from 45 BC, making 
+					it over 2000 years old. Richard McClintock, a Latin professor at 
+					Hampden-Sydney College in Virginia, looked up one of the more obscure 
+					Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+					the cites of the word in classical literature, discovered the undoubtable 
+					source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+					Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+					45 BC. This book is a treatise on the theory of ethics, very popular during
+					the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+					amet..", comes from a line in section 1.10.32.
+
+				</div>
+				<div id="head2" title="Header 1">
+
+					Contrary to popular belief, Lorem Ipsum is not simply random text. 
+					It has roots in a piece of classical Latin literature from 45 BC, making 
+					it over 2000 years old. Richard McClintock, a Latin professor at 
+					Hampden-Sydney College in Virginia, looked up one of the more obscure 
+					Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+					the cites of the word in classical literature, discovered the undoubtable 
+					source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+					Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+					45 BC. This book is a treatise on the theory of ethics, very popular during
+					the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+					amet..", comes from a line in section 1.10.32.
+
+				</div>
+				<div id="head3" title="Header 2">
+
+					Contrary to popular belief, Lorem Ipsum is not simply random text. 
+					It has roots in a piece of classical Latin literature from 45 BC, making 
+					it over 2000 years old. Richard McClintock, a Latin professor at 
+					Hampden-Sydney College in Virginia, looked up one of the more obscure 
+					Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+					the cites of the word in classical literature, discovered the undoubtable 
+					source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+					Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+					45 BC. This book is a treatise on the theory of ethics, very popular during
+					the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+					amet..", comes from a line in section 1.10.32.
+
+				</div>
+
+			</div>
+
+			<!-- End Control Code -->
+		
+		</div>
+	</div>
+
+	<div id="APITest" style="display:none" on="l:show[name=api] then show else hide">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+
+			<div on="click then script[createAccordion()]">Create the accordion</div>
+			<div on="click then script[makeMoreChanges()]">Append a new row and then<br/>remove row at position 0</div>
+			<div on="click then script[loadSomeNewData()]">Load some new data</div>
+			
+		</div>
+		<div class="control">
+
+			<!-- Start API-Managed version of Control  -->
+		
+			<div control="jquery_accordion[property=rows]" id="myAccordian2"
+			 on="l:buildAccordion then render
+				or l:a.hideAcc then hide 
+				or l:a.showAcc then show 
+				or l:a.disableAll then disable 
+				or l:a.enableAll then enable
+				or l:a.activate0 then activate[index=0]											 
+				or l:a.activate1 then activate[index=1]
+				or l:a.activate2 then activate[index=2]											
+				or l:a.content then activate[index=1] and content[index=1, value=myContent] 
+				or l:a.newTitle then title[index=2, value='Hello, World'] 
+				or l:a.removeFirst then remove[index=0] 
+				or l:a.loadHTML then activate[index=2] and loadHTML[index=2, url='assets/content1.html']">
+			</div>
+		
+			<!-- End Control Code -->			
+			
+			<div id="myAccordion2"></div>
+
+			<script>
+
+			function createAccordion()
+			{
+				App.createControl(
+					'myAccordion2', 
+					'jquery_accordion', 
+					{
+						property: "rows",
+						animated: "bounceslide"
+					},
+					function() {
+
+						this.addRow({ title: "Row0", content: "Hello, World.", id: "newTab0" });
+						this.addRow({ title: "Row1", content: "Goodbye, World.", id: "newTab1" });
+						this.addRow({ title: "Row2", url: "assets/content2.html", id: "newTab2" });
+						this.addRow({ title: "Row3", url: "assets/content1.html", id: "newTab3", index: 2, insert: "before" });
+						this.addRow({ title: "Row4", url: "assets/content1.html", id: "newTab4", index: 1, insert: "before" });
+						this.addRow({ title: "Row5", url: "assets/content2.html", id: "newTab5", insert: "after" });
+					}
+				);
+			}
+
+			function loadSomeNewData()
+			{
+				// add a new listener for a message condaining data
+				App.getControl('myAccordion2', 'jquery_accordion', function() {
+
+					swiss("#" + this.id).get(0).setAttribute("on", "l:buildAccordion then render");
+					App.Compiler.dynamicCompile(swiss("#" + this.id).get(0));
+					
+				});
+
+				var someStringData = "The quick fire fox jumped over the lazy explorer";
+
+				$MQ("l:buildAccordion", {
+
+					"rows": [
+						{ id:"zero", title: "First Section", content: someStringData },
+						{ id:"one", title: "Second Section", url: "assets/content1.html" },
+						{ id:"two", title: "Second Section", url: "assets/content2.html" }
+					]
+				});				
+			}
+
+			function makeMoreChanges()
+			{
+				App.getControl('myAccordion2', 'jquery_accordion', function() {
+
+					this.addRow({ title: "Dynamic Row", content: "Appcelerate!" });
+					this.deleteRow(0);
+
+				});
+			}
+
+			</script>
+		
+			<!-- End Control Code -->			
+			
+		</div>		
+	</div>
+	
+</body>
+
+</html>

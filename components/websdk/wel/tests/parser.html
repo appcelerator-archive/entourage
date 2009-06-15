@@ -1,0 +1,140 @@
+<html>
+<body>
+	<script>
+	  window.testVar = 'foo'
+		function getFuncVal()
+		{
+		//	App.Util.Logger.info('getFuncVal called')
+			return 10;
+		}
+	</script>
+
+	<div on="click then l:test[cat=1]" id="setup1"></div>
+	<div id="test1"on="l:test[!foo] then add[class=passed] else add[class=failed]"></div>
+	<div id="test1a"on="l:test[foo] then add[class=failed] else add[class=passed]"></div>
+	<div id="test1b"on="l:test[cat] then add[class=passed] else add[class=failed]"></div>
+	<div id="test1c"on="l:test[!cat] then add[class=failed] else add[class=passed]"></div>
+	<div id="test1d"on="l:test[cat,!foo] then add[class=passed] else add[class=failed]"></div>
+	<div id="test1e"on="l:test[foo,!cat] then add[class=failed] else add[class=passed]"></div>
+	
+	<div on="click then l:test[length=1]" id="setup2"></div>
+	<div id="test2" on="l:test[length!=1] then add[class=failed] else add[class=passed]"></div>
+	<div id="test3" on="l:test[length=1] then add[class=passed] else add[class=failed]"></div>
+	
+	<div on="click then l:test[x=100,y=200,z=300]" id="setup3"></div>
+	<div id="test4" on="l:test[x=100,y=200,foo=x] then add[class=failed] else add[class=passed]"></div>
+	<div id="test5" on="l:test[x=100,y=200,z=300,foo=x] then add[class=failed] else add[class=passed]"></div>
+	<div id="test6" on="l:test[y=201] then add[class=failed] else add[class=passed]"></div>
+	<div id="test7" on="l:test[x=100] then add[class=passed] else add[class=failed]"></div>
+	<div id="test8" on="l:test[y=200] then add[class=passed] else add[class=failed]"></div>
+	<div id="test9" on="l:test[z=300] then add[class=passed] else add[class=failed]"></div>
+	<div id="test10" on="l:test[x=100,y=200,z=300] then add[class=passed] else add[class=failed]"></div>
+	<div id="test11" on="l:test[x!=10,y!=201,z!=302] then add[class=passed] else add[class=failed]"></div>
+
+	<div on="click then l:test[x=100,y=200]" id="setup4"></div>
+	<div id="test12" on="l:test[x<102,y>150] then add[class=passed] else add[class=failed]"></div>
+	<div id="test13" on="l:test[x<=100,y>=200] then add[class=passed] else add[class=failed]"></div>
+	<div id="test14" on="l:test[x>1,y>2] then add[class=passed] else add[class=failed]"></div>
+	<div id="test15" on="l:test[x<100] then add[class=failed] else add[class=passed]"></div>
+	<div id="test16" on="l:test[x<=99] then add[class=failed] else add[class=passed]"></div>
+	<div id="test17" on="l:test[y>=400,x=100] then add[class=failed] else add[class=passed]"></div>
+	
+	<div on="click then l:test[value=my_message,id=10009]" id="setup5"></div>
+	<div id="test18" on="l:test[value=~^my] then add[class=passed] else add[class=failed]"></div>
+	<div id="test19" on="l:test[value=~^my_] then add[class=passed] else add[class=failed]"></div>
+	<div id="test20" on="l:test[value=~^ma] then add[class=failed] else add[class=passed]"></div>
+	<div id="test21" on="l:test[id=~9$] then add[class=passed] else add[class=failed]"></div>
+	<div id="test22" on="l:test[id=~009$] then add[class=passed] else add[class=failed]"></div>
+	<div id="test23" on="l:test[id=~19$] then add[class=failed] else add[class=passed]"></div>
+	<div id="test24" on="l:test[id=~000] then add[class=passed] else add[class=failed]"></div>
+	<div id="test25" on="l:test[value!=~^my] then add[class=failed] else add[class=passed]"></div>
+	<div id="test26" on="l:test[value!=~^ma] then add[class=passed] else add[class=failed]"></div>
+	
+	<div on="click then l:test[value=my_message,id=10009,funcVal=expr(getFuncVal())]" id="setup6"></div>
+	<div id="test27" 
+		on="l:test[expr(this.id==10009)] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test28" 
+		on="l:test[expr(this.id==10009),value=my_message] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test29" 
+		on="l:test[expr(this.id==10009),expr(this.value=='my_message')] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test30" 
+		on="l:test[expr(this.id==10009),expr(this.value=='m_message')] then add[class=failed] else add[class=passed]">
+	</div>
+	<div id="test31" 
+		on="l:test[expr(this.id==1009),expr(this.value=='my_message')] then add[class=failed] else add[class=passed]">
+	</div>
+	<div id="test32" 
+		on="l:test[expr(this.value=='my_message')] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test33" 
+		on="l:test[expr(this.value=='my_mssage')] then add[class=failed] else add[class=passed]">
+	</div>
+	<div id="test34" 
+		on="l:test[expr(this.id==1009)] then add[class=failed] else add[class=passed]">
+	</div>
+	<div id="test35" 
+		on="l:test[funcVal=10] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test36" 
+		on="l:test[funcVal!=10] then add[class=failed] else add[class=passed]">
+	</div>
+	<div id="test36" 
+		on="l:test[funcVal!=10] then add[class=failed] else add[class=passed]">
+	</div>
+	<div id="test37" 
+		on="l:test[id=$hidden_val] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test38" 
+		on="l:test[id!=$hidden_val] then add[class=failed] else add[class=passed]">
+	</div>
+	<div on="click then l:test[test=expr(testVar)]" id="setup7"></div>
+	<div id="test39" 
+		on="l:test[test=foo] then add[class=passed] else add[class=failed]">
+	</div>
+	<div id="test40" 
+		on="l:test[test!=foo] then add[class=failed] else add[class=passed]">
+	</div>
+
+	<div id="test41" on="(click or mouseover or test[one]) then toggle[display=block]" style="display:block">foo</div>
+	<div id="test41a" on="click then statechange[test=one]"></div>
+
+	<div id="test42" on="click then toggle[display=block]
+			or mouseover then toggle[display=block]
+			or test[two] then toggle[display=block]
+			or mousedown then toggle[display=block]" style="display:block">foo</div>
+	<div id="test42a" on="click then statechange[test=two]"></div>
+			
+	<input type="hidden" id="hidden_val" value="10009"/>
+	
+	<div id="test43" on="click then toggle[display=block] after 2s 
+		or dblclick then toggle[display=block] after 500ms" style="display:block">foo</div>
+
+    <div id="test44" 
+	on="click then toggle[display=block] if expr[swiss('#test44a').hasClass('on')==true]" 				
+	style="display:block">foo</div>
+	<div id="test44a" class="on"></div>
+	<script>
+	if (window.App)
+	{
+		var x= new App.StateMachine('test');
+		x.addState('one','l:foo[name=foo,date=bar]',false);
+		x.addState('two','l:foo1',false);
+		x.addState('three','l:foo2',true);
+	}
+	else
+	{
+		window.onload = function()
+		{
+			var x= new App.StateMachine('test');
+			x.addState('one','l:foo[name=foo,date=bar]',false);
+			x.addState('two','l:foo1',false);
+			x.addState('three','l:foo2',true);
+		}
+	}
+	</script>
+</body>
+
+</html>

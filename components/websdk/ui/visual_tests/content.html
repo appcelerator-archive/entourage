@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:test[val=1]">Basic Content</div>
+		
+		</div>
+		<div class="control">
+			<div on="l:test[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>Basic content (lazy=false)</li>
+					<li>Test dynamic args - first word in first content file should be 'fred'</li>				
+					<li>Basic content (lazy=true) - <a href="#" on="click then l:load">load</a></li>
+				</ul>
+				Content 1
+				<div control="content[src=assets/content1.html,lazy=false,args={name:'fred'}]" 
+					style="border:1px solid #ccc;padding:5px;margin-bottom:10px">
+				</div>
+				Content 2
+				<div control="content[src=assets/content2.html,lazy=true]" on="l:load then execute and show" 
+					style="border:1px solid #ccc;padding:5px;display:none">
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then l:test_api[val=1]">API 1</div>
+
+		</div>
+		<div class="control">
+			<div on="l:test_api[val=1] then show else hide">
+				Test 1
+				<ul>
+					<li>Load a file into existing markup (first one with first word = judy)</li>
+					<li>Get a content control inst and change the src - <a href="#" on="click then l:change_content">load now</a></li>
+				</ul>
+				
+				<div id="content_1" style="border:1px solid #ccc;padding:5px;margin-bottom:10px"></div>
+				<div id="content_2" control="content[src=assets/content2.html,lazy=false,args={name:'fred'}]" 
+					style="border:1px solid #ccc;padding:5px;margin-bottom:10px">
+				</div>
+
+				<script>
+				App.getControl('content_2', 'content',function()
+				{
+					inst = this;
+				});
+			App.createControl('content_1','content',{'src':'assets/content1.html',lazy:false,args:'{name:"judy"}'},function(){}); 
+			var inst;
+			$MQL('l:change_content',function(msg)
+			{
+				inst.load({src:'assets/content1.html'})
+			})
+				</script>
+			</div>
+		</div>
+	</div>
+
+
+	
+</body>
+
+</html>

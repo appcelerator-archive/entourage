@@ -1,0 +1,201 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:m.addTab">Add a tab at index 2</div>
+			<div on="click then l:m.removeTab">Remove a tab from index 1</div>
+			<div on="click then l:m.disable2">Disable tab 2</div>
+			<div on="click then l:m.enable2">Enable tab 2</div>
+			<div on="click then l:m.reload2">Load tab 2 with new remote html</div>
+		
+		</div>
+		<div class="control">
+	
+			<!-- Start MarkUp-Managed version of Control -->	
+		
+			<div id="myTabs" control="jquery_tabs"
+				on="l:m.addTab then add[url='#myNewTab', label='NewTab!', index=2, content='bla bla bla']
+					or l:m.disable2 then disable[2]
+					or l:m.enable2 then enable[2]
+					or l:m.removeTab then remove[1]
+					or l:m.selectTab then select[1]
+					or l:m.reload2 then reload[url='assets/content2.html', index=2]">
+				<div id="tab0" title="Static Tab 0">
+
+					Contrary to popular belief, Lorem Ipsum is not simply random text. 
+					It has roots in a piece of classical Latin literature from 45 BC, making 
+					it over 2000 years old. Richard McClintock, a Latin professor at 
+					Hampden-Sydney College in Virginia, looked up one of the more obscure 
+					Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+					the cites of the word in classical literature, discovered the undoubtable 
+					source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+					Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+					45 BC. This book is a treatise on the theory of ethics, very popular during
+					the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+					amet..", comes from a line in section 1.10.32.
+				
+				
+				</div>
+				<div id="tab1" title="Static Tab 1">
+
+					Contrary to popular belief, Lorem Ipsum is not simply random text. 
+					It has roots in a piece of classical Latin literature from 45 BC, making 
+					it over 2000 years old. Richard McClintock, a Latin professor at 
+					Hampden-Sydney College in Virginia, looked up one of the more obscure 
+					Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+					the cites of the word in classical literature, discovered the undoubtable 
+					source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+					Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+					45 BC. This book is a treatise on the theory of ethics, very popular during
+					the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+					amet..", comes from a line in section 1.10.32.
+
+				</div>
+				<div id="tab2" title="Ajax Tab 1" href="assets/content1.html">
+				</div>
+				<div id="tab3" title="Ajax Tab 2" href="assets/content2.html">
+				</div>
+			</div>
+			
+			<!-- End Control Code -->
+		
+		</div>
+	</div>
+	
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<div on="click then script[init()]">Create tabs</div>
+			<div on="click then script[add()]">Add a tab at 1</div>
+			<div on="click then script[remove()]">Remove tab 1</div>
+			<div on="click then script[enable2()]">Enable tab 2</div>
+			<div on="click then script[disable2()]">Disable tab 2</div>
+			<div on="click then script[select()]">select tab 2</div>
+			<div on="click then script[url()]">change the url of the tab<br/>and load the content again</div>
+			<div on="click then script[length()]">count the tabs</div>
+
+		</div>
+		<div class="control">
+			
+			<!-- Start API-Managed version of Control  -->
+		
+				<div id="myTabs2"></div>
+		
+			<!-- End Control Code -->			
+			
+		</div>		
+		
+	</div>
+
+	<script>
+ 
+		// API-Managed version of Control...
+
+		function init()
+		{	
+			App.createControl(
+				'myTabs2', 
+				'jquery_tabs', 
+				{
+					property: "rows"
+				},
+				function() {
+					this.render({ rows: [{ id:"zero", title: "First Section", content: "someStringData" },
+										{ id:"one", title: "Second Section", url: "assets/content1.html" },
+										{ id:"two", title: "Second Section", url: "assets/content2.html" }
+										]
+					});
+				}
+			);
+
+		}
+
+		function add()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				this.add({url: "#myTab1", label: "New Tab", index: 1, content: "hello, world."});
+
+			});			
+		}
+
+		function remove()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				this.remove(1);
+
+			});			
+		}		
+
+
+		function select()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				this.select(2);
+
+			});			
+		}	
+		
+		function url()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				this.url({index: 1, url: "assets/content2.html"});
+				this.load(1);
+			});			
+		}	
+		
+		function length()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				alert(this.length());
+
+			});			
+		}		
+
+		function enable2()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				this.enable(2);
+			});			
+		}	
+		
+		function disable2()
+		{
+			App.getControl('myTabs2', 'jquery_tabs', function() {
+
+				this.disable(2);
+
+			});			
+		}			
+
+	</script>
+
+	
+</body>
+
+</html>

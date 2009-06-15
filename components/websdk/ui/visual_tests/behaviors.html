@@ -1,0 +1,391 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage-debug.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+	<style>
+	.box
+	{
+		border:1px solid #ccc;
+		width:400px;
+		height:40px;
+		background-color:#eee;
+		margin:10px;
+		padding:10px;
+	}
+	.resize
+	{
+		background-color:#ffffcc !important;
+	}
+	.resize_border
+	{
+		border:1px solid #ff0000;
+	}
+	
+	</style>
+</head>
+
+<body> 
+		
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+	</div>
+	
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+		
+			<div on="click then l:test[val=1]">Draggable</div>
+			<div on="click then l:test[val=2]">Droppable</div>
+			<div on="click then l:test[val=3]">Modal</div>
+			<div on="click then l:test[val=4]">Resizable</div>
+			<div on="click then l:test[val=5]">Sortable</div>
+			<div on="click then l:test[val=6]">Selectable</div>
+			<div on="click then l:test[val=7]">Tooltip</div>
+			<div on="click then l:test[val=8]">Multiple Behaviors</div>
+			<div on="click then l:test[val=9]">JQuery Effects</div>
+			<div on="click then l:test[val=10]">Misc</div>
+		
+		</div>
+		<div class="control">
+			<div on="l:test[val=1] then show else hide">
+				<div behavior="draggable" class="box">Draggable (no options)</div>
+				<div behavior="draggable[revert=true,revertDuration=10]" class="box">
+					Draggable (revert, revertDuration=10ms)
+				</div>
+				<div behavior="draggable"
+				 	on="dragstart then add[class=resize] or dragend then remove[class=resize]" class="box">
+					Draggable (yellow while drag, normal on stop)
+				</div>
+				<div behavior="draggable" class="box"
+					on="drag then add[class=resize_border]">
+					Draggable  (border turns red - stays red)
+				</div>
+				<div id="js_draggable" behavior="draggable[start=expr(dragStart),stop=expr(dragStop)]" class="box">
+					JS callback for start and stop (red border on/off)
+				</div>
+
+				<div class="box" id="draggable">
+					Created via API
+				</div>
+
+			</div>
+			<div on="l:test[val=2] then show else hide" style="display:none">
+				<div id="drag_1" behavior="draggable[helper=clone]" class="box">Drag Me</div>
+				<div behavior="droppable[hoverClass=resize]" 
+					on="drop then value[dropped] and add[class=resize] or drop then value[Drag Here] and remove[class=resize] after 1s" class="box">
+					Drop Here
+				</div>
+			</div>
+			<div on="l:test[val=3] then show else hide" style="display:none">
+				<a on="click then l:modal" href="#">show modal</a> | 
+				<a on="click then l:modal2" href="#">show modal 2</a> |
+				<a on="click then l:modal3" href="#">show modal 3</a>
+
+				<div class="box" 
+					behavior="modal[background-color=#336699,showEffect=fadeIn,hideEffect=explode]" 
+						on="l:modal then show or l:close then hide">
+					<div>Custom background and show/hide effects</div>
+					<div on="click then l:close">close</div>
+				</div>
+				<div class="box" 
+					behavior="modal[opacity=0]" 
+						on="l:modal2 then show or l:close2 then hide">
+						<div>Modal with opacity = 0</div>
+					<div on="click then l:close2">close</div>
+				</div>
+				<div id="modal_api1" class="box">
+					<div>API</div>
+					<div on="click then l:close3">close</div>
+				</div>
+				<script>
+				App.addBehavior('modal_api1','modal',{},function()
+				{
+					var el = swiss('#'+this.id).get(0)
+					el.setAttribute('on','l:modal3 then show or l:close3 then hide');
+					App.Compiler.dynamicCompile(el);
+				})
+				</script>
+			</div>
+			
+			<div on="l:test[val=4] then show else hide" style="display:none">
+				<div behavior="resizable[ghost=true,animate=true]"  
+					class="box">Resize (ghost true,animate true)</div>
+				<div behavior="resizable[knobHandles=true]"  class="box">
+					Resize  (knobHandles true)
+				</div>
+				<div behavior="resizable" class="box"
+					on="resizestart then add[class=resize] or resizeend then remove[class=resize]">
+					Resize  (turn yellow while resize, normal on stop)
+				</div>
+				<div behavior="resizable" class="box"
+					on="resize then add[class=resize_border]">
+					Resize  (border turns red - stays red)
+				</div>
+				<div id="js_resize" behavior="resizable[start=expr(resizeStart),stop=expr(resizeStop)]" class="box">
+					JS callback for start and stop (red border on/off)
+				</div>
+
+				<div class="box" id="resize">
+					Created via API
+				</div>
+				<script>
+				App.addBehavior('resize','resizable',{},null);
+				App.addBehavior('draggable','draggable',{},null);
+
+				function resizeStart()
+				{
+					swiss('#js_resize').addClass('resize_border')
+				}
+				function resizeStop()
+				{
+					swiss('#js_resize').removeClass('resize_border')
+				}
+				function dragStart()
+				{
+					swiss('#js_draggable').addClass('resize_border')
+				}
+				function dragStop()
+				{
+					swiss('#js_draggable').removeClass('resize_border')
+				}
+
+				</script>
+			</div>
+			<div on="l:test[val=5] then show else hide" style="display:none">
+				<div behavior="sortable">
+					<div class="box"> 
+						One
+					</div>
+					<div class="box"> 
+						Two
+					</div>
+					<div class="box"> 
+						Three
+					</div>
+					<div class="box"> 
+						Four
+					</div>
+					<div class="box"> 
+						Five
+					</div>
+
+				</div>	
+			</div>
+
+			<div on="l:test[val=6] then show else hide" style="display:none">
+				<div behavior="selectable">
+					<div class="box" 
+						on="selecting then add[class=resize] or unselecting then remove[class=resize]">
+						One
+					</div>
+					<div class="box" 
+						on="selecting then add[class=resize] or unselecting then remove[class=resize]">
+						Two
+					</div>
+					<div class="box" 
+						on="selecting then add[class=resize] or unselecting then remove[class=resize]">
+						Three
+					</div>
+					<div class="box" 
+						on="selecting then add[class=resize] or unselecting then remove[class=resize]">
+						Four
+					</div>
+
+				</div>	
+			</div>
+			<div on="l:test[val=7] then show else hide" style="display:none">
+				
+				<input type="text" id="tooltip1" value="test1"/>
+				<input type="text" id="tooltip2" value="test2"/>
+				<input type="text" id="tooltip3" value="test3"/>
+				<input type="text" id="tooltip4" value="test4">
+			</div>
+			<div on="l:test[val=8] then show else hide" style="display:none">
+				<a href="#" on="click then l:combo">test1</a> | 
+				<a href="#" on="click then l:api_combo">test2</a>
+				<input type="text" id="tooltip5" value="test4">
+				<div behavior="modal and draggable" on="l:combo then show or l:combo_close then hide" class="box">
+					modal and draggable <div on="click then l:combo_close">close</div>
+				</div>
+
+				
+				<div id="multiple_api" class="box" on="l:api_combo then show or l:api_combo_close then hide">
+					API (modal, draggable, resizable)<div on="click then l:api_combo_close">close</div>
+				</div>
+			</div>
+			<div on="l:test[val=9] then show else hide" style="display:none">
+				<div style="float:left">
+				<!-- HIDE -->
+				<div class="box" on="click then effect[hide,speed=100]">Hide (100)</div>
+				<div class="box" on="click then effect[hide,speed=2000]">Hide (2000)</div>
+
+				<!-- SHOW -->
+				<div class="box" on="click then effect[show,id=show1,speed=100]">Show (100)
+					<div class="passed" style="display:none" id="show1">hello</div>	
+				</div>
+
+				<div class="box" on="click then effect[show,id=show2,speed=2000]">Show (2000)
+					<div class="passed" style="display:none" id="show2">hello</div>				
+				</div>
+
+				<!-- TOGGLE -->
+				<div class="box" on="click then effect[toggle,id=show3,speed=100]">Toggle (100)
+					<div class="passed" style="display:none" id="show3">hello</div>				
+				</div>
+				<div class="box" on="click then effect[toggle,id=show4,speed=2000]">Toggle (2000)
+					<div class="passed" style="display:none" id="show4">hello</div>	
+				</div>
+
+				<!-- SLIDE DOWN -->
+				<div class="box" on="click then effect[slideDown,id=show5,speed=100]">SlideDown (100)
+					<div class="passed" style="display:none" id="show5" >hello</div>				
+				</div>
+				<div class="box" on="click then effect[slideDown,id=show6,speed=2000]">SlideDown (2000)
+					<div class="passed" style="display:none" id="show6">hello</div>	
+				</div>
+
+
+				<!-- SLIDE UP -->
+				<div class="box" on="click then effect[slideUp,id=show7,speed=100]">SlideUp (100)
+					<div class="passed"  id="show7" >goodbye</div>				
+				</div>
+				<div class="box" on="click then effect[slideUp,id=show8,speed=2000]">SlideUp (2000)
+					<div class="passed"  id="show8">goodbye</div>	
+				</div>
+
+				</div>
+				<div style="float:left">
+
+				<!-- SLIDE TOGGLE -->
+				<div class="box" on="click then effect[slideToggle,id=show9,speed=100]">SlideToggle (100)
+					<div class="passed"  id="show9" >in/out</div>				
+				</div>
+				<div class="box" on="click then effect[slideToggle,id=show10,speed=2000]">SlideToggle (2000)
+					<div class="passed"  id="show10">in/out</div>	
+				</div>
+
+				<!-- FADE IN -->
+				<div class="box" on="click then effect[fadeIn,id=show11,speed=100]">FadeIn (100)
+					<div class="passed"  id="show11" style="display:none" >hello</div>				
+				</div>
+				<div class="box" on="click then effect[fadeIn,id=show12,speed=2000]">FadeIn (2000)
+					<div class="passed"  id="show12"  style="display:none">hello</div>	
+				</div>
+
+				<!-- FADE OUT -->
+				<div class="box" on="click then effect[fadeOut,id=show13,speed=100]">FadeOut (100)
+					<div class="passed"  id="show13" >goodbye</div>				
+				</div>
+				<div class="box" on="click then effect[fadeOut,id=show14,speed=2000]">FadeOut (2000)
+					<div class="passed"  id="show14">goodbye</div>	
+				</div>
+
+				<!-- FADE TO -->
+				<div class="box" on="click then effect[fadeTo,id=show15,speed=100,opacity=0.40]">FadeTo (100,0.4)
+					<div class="passed"  id="show15" >goodbye</div>				
+				</div>
+				<div class="box" on="click then effect[fadeTo,id=show16,speed=slow,opacity=0.40]">FadeTo (slow,0.4)
+					<div class="passed"  id="show16">goodbye</div>	
+				</div>
+
+				<!-- ANIMATE -->
+				<div class="box" on="click then effect[animate,id=show17,width=500px,height=300px,opacity=0.1,speed=1000]">Animate 
+					<div style="width:50px;height:100px;background-color:red"  id="show17" >animate</div>				
+				</div>
+
+				<!-- BOUNCE -->
+				<div class="box" on="click then effect[bounce,id=show18,times=14,directon=up,speed=100]">Bounce 
+					<div class="passed"  id="show18" >bounce</div>				
+				</div>
+
+				</div>
+				<div style="float:left">
+				<!-- EXPLODE -->
+				<div class="box" on="click then effect[explode,pieces=25,speed=1000]">Explode 
+				</div>
+				<!-- BLIND -->
+				<div class="box" on="click then effect[blind,direction=vertical,speed=1000]">Blind (veritcal) 
+				</div>
+				<!-- BLIND -->
+				<div class="box" on="click then effect[blind,direction=horizontal,speed=1000]">Blind (horizontal) 
+				</div>
+				<!-- CLIP -->
+				<div class="box" on="click then effect[clip,direction=vertical,speed=1000]">Clip (veritcal) 
+				</div>
+				<!-- DROP -->
+				<div class="box" on="click then effect[clip,direction=right,speed=1000]">Drop (right) 
+				</div>
+				<!-- FOLD -->
+				<div class="box" on="click then effect[fold,speed=1000]">Fold  
+				</div>
+				<!-- PUFF -->
+				<div class="box" on="click then effect[puff,speed=1000]">Puff  
+				</div>
+				<!-- SLIDE -->
+				<div class="box" on="click then effect[slide,direction=left,speed=1000]">Slide  
+				</div>
+				<!-- PULSATE -->
+				<div class="box" on="click then effect[pulsate,times=5,speed=1000]">Pulsate   
+				</div>
+				<!-- HIGHLIGHT -->
+				<div class="box" on="click then effect[highlight,speed=1000]">Highlight   
+				</div>
+				<!-- SHAKE -->
+				<div class="box" on="click then effect[shake,direction=up,times=5,speed=1000]">Shake   
+				</div>
+				</div>
+
+			</div>
+			<div on="l:test[val=10] then show else hide" style="display:none">
+				Register Listener Test
+				<a href="#" on="click then l:list_1">click me</a>
+				<div behavior="modal" class="box" id="list_1" on="l:list_1 then show or l:list_1_close then hide">
+					should have red background with custom hide/show effects
+					<div on="click then l:list_1_close">close</div>
+				</div>
+				
+				<div style="margin-top:10px">Key Combo Tests - field will highlight on key combo</div>
+				<div>
+					<input type="text" value="ctrl_shift_esc" on="keyup[ctrl+shift+esc] then effect[highlight]"/>
+					<input type="text" value="ctrl_shift_up" on="keydown[ctrl+shift+up] then effect[highlight]"/>
+				    <input type="text" value="shift_z" on="keypress[shift+90] then effect[highlight]	"/> 
+				</div>	
+				<script>
+				App.registerListener('list_1','behavior','modal','afterBuild',function()
+				{
+					this.instance.options['background-color'] = "red";
+					this.instance.options['showEffect'] = "fadeIn";
+					this.instance.options['hideEffect'] = "fadeOut";
+					
+				})
+				</script>
+			</div>
+		</div>
+	</div>
+
+	<div class="box" behavior="tooltip[id=tooltip1]">basic</div>
+	<div class="box" behavior="tooltip[id=tooltip2,showEffect=slideDown,hideEffect=explode]">custom show/hide effect</div>
+	<div class="box" behavior="tooltip[id=tooltip3,delay=500]">hide delay</div>
+	<div class="box" id="api_tooltip">API tooltip</div>
+	<div behavior="resizable and draggable and tooltip[id=tooltip5]" class="box">
+		resizable and draggable tooltip
+	</div>
+	
+	<script>
+	App.addBehavior('api_tooltip','tooltip',{id:'tooltip4'});
+	App.addBehavior('multiple_api','modal',{});
+	App.addBehavior('multiple_api','draggable',{});
+	App.addBehavior('multiple_api','resizable',{});
+	
+	</script>
+	
+</body>
+
+</html>

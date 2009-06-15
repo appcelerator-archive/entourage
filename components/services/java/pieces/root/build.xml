@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================== -->
+<!-- Appcelerator Project Build                                           -->	
+<!-- Do not change, instead modify build-override.xml                     -->	
+<!-- myapp                                                                -->	
+<!-- ==================================================================== -->
+<project name="myapp" default="dist" basedir=".">
+    <description>myapp Build File</description>
+    <property file="${user.home}/.ant.properties"/>
+	<import file="build-override.xml" optional="true"/>
+    <property file="config/build.properties"/>
+	<import file="build-appcelerator.xml" optional="false"/>
+</project>

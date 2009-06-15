@@ -1,0 +1,234 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+	<script type="text/javascript" charset="utf-8" src="../../lib/third_party/jquery.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../lib/third_party/jquery-ui.js"></script>
+
+	<script type="text/javascript" charset="utf-8" src="../../lib/swiss/swiss.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../lib/swiss/swiss-jquery.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../mq/mq.js"></script>	
+	<script type="text/javascript" charset="utf-8" src="../../logger/logger.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../browser/browser.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../util/util.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../compiler/compiler.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/string.js"></script>
+	
+
+	<script type="text/javascript" charset="utf-8" src="../../wel/wel.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/actions/hide.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/actions/show.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/actions/effect.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/actions/set.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/actions/remove.js"></script>
+
+	
+	<script type="text/javascript" charset="utf-8" src="../../wel/conditions/dom.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/conditions/key.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/conditions/intrations.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../wel/conditions/message.js"></script>
+	
+	
+	<script type="text/javascript" charset="utf-8" src="../../wel/processors/on.js"></script>
+
+	<script type="text/javascript" charset="utf-8" src="../uri.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../api.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../core.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../layouts.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../processors.js"></script>
+	
+	<script type="text/javascript" charset="utf-8" src="../themes.js"></script>
+
+	<style>
+		.controlHeader
+		{
+			font-size: 14px;
+			font-weight: bold;
+			font-family: Verdana;
+			margin: 4px;
+		}
+		
+		.instruction
+		{
+			float: left;
+			color: red; 
+			border: 1px solid red; 
+			padding: 4px; 
+			margin: 1px; 
+			display: inline-block; 
+			cursor: default;
+		}
+		
+	</style>
+
+</head>
+
+<body>
+
+	<div class="instruction" on="click then l:setSlider"> position the slider </div>
+	<div class="instruction" on="click then l:openDialog"> open the dialog </div>
+	<div class="instruction" on="click then l:showDatepicker"> show the datepicker </div>		
+	<div class="instruction" on="click then l:updateProgressbar"> update the progressbar </div>		
+	<div class="instruction" on="click then l:disableButton"> disable button </div>
+	<div class="instruction" on="click then l:enableButton"> enable button </div>
+	<br/><br/>
+
+	
+	<!-- start control: accordian -->
+	
+	<div class="controlHeader">Accordian</div>
+	
+	<div control="jquery_accordion" id="myAccordion" 
+								on="l:myMessages.disableSecond then disable[index=1] or l:myMessages.disableAll then disable or l:myMessages.enableAll then enable or l:myMessages.content then content[index=1, value=myContent] or l:myMessages.newTitle then title[index=1, value=hello world] or l:myMessages.removeFirst then remove[index=0]">
+									
+		<div id="head1" title="Header 1">
+
+			Contrary to popular belief, Lorem Ipsum is not simply random text. 
+			It has roots in a piece of classical Latin literature from 45 BC, making 
+			it over 2000 years old. Richard McClintock, a Latin professor at 
+			Hampden-Sydney College in Virginia, looked up one of the more obscure 
+			Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+			the cites of the word in classical literature, discovered the undoubtable 
+			source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+			Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+			45 BC. This book is a treatise on the theory of ethics, very popular during
+			the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+			amet..", comes from a line in section 1.10.32.
+
+		</div>
+		<div id="head2" title="Header 2">
+
+			Contrary to popular belief, Lorem Ipsum is not simply random text. 
+			It has roots in a piece of classical Latin literature from 45 BC, making 
+			it over 2000 years old. Richard McClintock, a Latin professor at 
+			Hampden-Sydney College in Virginia, looked up one of the more obscure 
+			Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+			the cites of the word in classical literature, discovered the undoubtable 
+			source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+			Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+			45 BC. This book is a treatise on the theory of ethics, very popular during
+			the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+			amet..", comes from a line in section 1.10.32.
+
+		</div>
+		<div id="head3" title="Header 3">
+
+			Contrary to popular belief, Lorem Ipsum is not simply random text. 
+			It has roots in a piece of classical Latin literature from 45 BC, making 
+			it over 2000 years old. Richard McClintock, a Latin professor at 
+			Hampden-Sydney College in Virginia, looked up one of the more obscure 
+			Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+			the cites of the word in classical literature, discovered the undoubtable 
+			source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+			Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+			45 BC. This book is a treatise on the theory of ethics, very popular during
+			the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+			amet..", comes from a line in section 1.10.32.
+
+		</div>
+
+	</div>
+
+	<!-- end control: accordian -->
+	<!-- start control: slider -->
+
+	<div class="controlHeader">Slider</div>
+
+	<div control="jquery_slider[value=20]" id="mySlider" on="l:setSlider then position[value=75]">
+	</div>
+	
+	<!-- end control: slider -->
+	<!-- start control: progressbar -->
+	
+	<div class="controlHeader">Progressbar</div>
+
+	<div control="jquery_progressbar[value=20]" id="myProgressbar" on="l:updateProgressbar then value[80]">
+	</div>
+	
+	<!-- end control: progressbar -->
+	<!-- start control: dialog -->
+
+	<div control="jquery_dialog" id="myDialog" title="Lorem Ipsum" 
+		on="l:openDialog then open">
+	
+		Contrary to popular belief, Lorem Ipsum is not simply random text. 
+		It has roots in a piece of classical Latin literature from 45 BC, making 
+		it over 2000 years old. Richard McClintock, a Latin professor at 
+		Hampden-Sydney College in Virginia, looked up one of the more obscure 
+		Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+		the cites of the word in classical literature, discovered the undoubtable 
+		source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+		Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+		45 BC. This book is a treatise on the theory of ethics, very popular during
+		the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+		amet..", comes from a line in section 1.10.32.
+	
+	</div>
+
+	<!-- end control: dialog -->	
+	<!-- start control: tabs -->
+	<div class="controlHeader">Tabs</div>	
+
+	<div id="myTabs" control="jquery_tabs">
+		<div id="tab1" title="Static Tab 1">
+
+			Contrary to popular belief, Lorem Ipsum is not simply random text. 
+			It has roots in a piece of classical Latin literature from 45 BC, making 
+			it over 2000 years old. Richard McClintock, a Latin professor at 
+			Hampden-Sydney College in Virginia, looked up one of the more obscure 
+			Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+			the cites of the word in classical literature, discovered the undoubtable 
+			source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+			Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in
+			45 BC. This book is a treatise on the theory of ethics, very popular during
+			the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
+			amet..", comes from a line in section 1.10.32.
+			
+		</div>
+		<div id="tab2" title="Ajax Tab 1" href="content1.html">
+		</div>
+		<div id="tab3" title="Ajax Tab 2" href="content2.html">
+		</div>
+	</div>
+
+	<!-- end control: tabs -->	
+	<!-- start control: datepicker -->
+
+	<div class="controlHeader">Datepicker</div>
+	
+	The Date: <input control="jquery_datepicker[duration=slow]" on="l:showDatepicker then show" id="myDatePicker">
+	
+	<!-- end control: datepicker -->
+	<!-- start control: select -->
+
+	<select theme="thinblue">
+		<option>One</option>
+		<option>Two</option>
+		<option>Three</option>
+	</select>
+
+	<!-- end control: select -->
+	<!-- start contorl: button -->
+	
+	<button theme="white[width=110]" value="Open Dialog" on="click then disable or l:enableButton the enable"></button>
+			
+	<!-- end control: button -->
+	
+	<!-- start contorl: datatable -->	
+
+	<div control="yui_datatable[dataSource=YAHOO.example.Data.bookorders]">
+		<column key="id" formatter="numeric" unsortable undraggable></column>
+		<column key="date" formatter="date"></column>
+		<column key="quantity" formatter="numeric" label="Qty."></column>
+		<column key="amount" formatter="numeric"></column>
+		<column key="title" label="My Title"></column>
+	</div>
+
+	<!-- end control: datatable -->
+	
+	
+	
+</body>
+
+</html>

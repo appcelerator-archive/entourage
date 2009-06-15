@@ -1,0 +1,11 @@
+<html>
+<body>
+	<input type="button" id="test_1" on="click then disable or disabled then add[class=passed]"/>
+	<input type="button" id="test_2" disabled="true" on="mouseover then enable or enabled then add[class=passed]"/>
+	<input type="text" id="test_3" validator="email" value="foo" 
+		on="invalid then add[class=invalid_passed] or valid then add[class=valid_passed]"/>
+	<div id="test_4" on="hide then add[class=passed] or click then hide"></div>
+	<div id="test_5" style="display:none" on="show then add[class=passed] or click then show"></div>
+	
+</body>
+</html>

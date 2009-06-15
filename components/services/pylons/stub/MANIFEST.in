@@ -1,0 +1,3 @@
+include _rename_to_your_app_/config/deployment.ini_tmpl
+recursive-include public *
+recursive-include _rename_to_your_app_/templates *

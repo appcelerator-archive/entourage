@@ -1,0 +1,66 @@
+#!/bin/sh
+# Copyright 2006-2008 Appcelerator, Inc.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#    http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License. 
+
+
+#
+# we need to check and see if we're in pre-flight mode
+#
+if [ $UID -eq 0 ]
+then
+    if [ "$1" == "--postflight--" ]
+    then
+         echo "mkdir -p /Library/Appcelerator/releases" >> /tmp/appcelerator_installer.log
+         mkdir -p /Library/Appcelerator/releases
+         
+         echo "mkdir -p /Library/Appcelerator/updates" >> /tmp/appcelerator_installer.log
+         mkdir -p /Library/Appcelerator/updates
+
+         echo "chown -R root:admin /Library/Appcelerator" >> /tmp/appcelerator_installer.log
+         chown -R root:admin /Library/Appcelerator
+
+         echo "chown -R root:admin /usr/bin/appcelerator" >> /tmp/appcelerator_installer.log
+         chown -R root:admin /usr/bin/appcelerator
+
+         echo "chmod -R 0777 /Library/Appcelerator/releases" >> /tmp/appcelerator_installer.log
+         chmod -R 0777 /Library/Appcelerator/releases
+
+         echo "chmod -R 0777 /Library/Appcelerator/updates" >> /tmp/appcelerator_installer.log
+         chmod -R 0777 /Library/Appcelerator/updates
+
+         echo "chmod -R 0666 /Library/Appcelerator/build.yml" >> /tmp/appcelerator_installer.log
+         chmod -R 0666 /Library/Appcelerator/build.yml
+
+         echo "chmod +x /Library/Appcelerator/appcelerator" >> /tmp/appcelerator_installer.log
+         chmod +x /Library/Appcelerator/appcelerator
+
+         echo "ln -fs /Library/Appcelerator/appcelerator /usr/bin/app" >> /tmp/appcelerator_installer.log
+         ln -fs /Library/Appcelerator/appcelerator /usr/bin/app
+
+         echo "chmod +x /usr/bin/app" >> /tmp/appcelerator_installer.log
+         chmod +x /usr/bin/app
+
+         PATH=$PATH:/usr/local/bin:/opt/local/bin:/usr/bin:/bin
+         echo "PATH=$PATH" >> /tmp/appcelerator_installer.log
+
+         echo "sudo -u $USER open $2" >> /tmp/appcelerator_installer.log
+         sudo -u $USER open "$2"
+
+         echo "exiting successfully!" >> /tmp/appcelerator_installer.log
+         exit 0
+    fi 
+fi
+
+/Library/Appcelerator/appcelerator $*
+exit $?

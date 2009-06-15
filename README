@@ -1,0 +1,109 @@
++=======================================================================================+
++                        Appcelerator Entourage                                         +
++=======================================================================================+
+
+---------------------
+ Build Prerequisites
+---------------------
+
+To build Appcelerator Entourage from source, you will need the following
+prerequisites:
+
+  - Ruby 1.8.6 or greater <http://www.ruby-lang.org/en/downloads/>
+  - RubyGems with the following gems: rake, hoe, hpricot, json, maruku, rubyzip
+
+To build the platform installers, you will need the following:
+
+  - Mac OSX - you will need to install XCode 3.0 from the extra CD or download
+    from Apple
+  - Win32* - you will need to install NSIS installer
+    <http://nsis.sourceforge.net/Download>
+  - Unix - no additional third-party software is required at this time.
+
+* For building NSIS on OSX/Unix, you can download the non-Win32 compiler which
+will allow you to build the Win32 installer on other OS platforms.  For example,
+on OSX, if you have darwinports installed, you can install NSIS with:
+
+  > port install nsis
+
+If you would like to build Titanium alongside the Entourage, you will need to
+checkout Titanium from <http://github.com/marshall/titanium/tree/master> and
+then set the  environment variable 'TITANIUM_DIR' to the directory.  You will
+also need to follow build instructions in the titanium project before building.
+If you don't want to build  titanium or don't have it checked out, you can still
+build Appcelerator Entourage with no problems.
+
+--------------------
+ Build Instructions
+--------------------
+
+To build everything, you can execute rake normally, like:
+
+  > rake
+
+To build a specific component, you can run rake with one or more tasks, like:
+
+  > rake service:java
+
+Each Rakefile is built into several sub-components, each within their own
+directory structures and Rakefiles.  The main components are:
+
+  - runtime (includes both command-line binary and installers)
+  - services
+  - websdk
+
+You can execute a specific component with the task <component>:<name>. For
+example, to build the Java Service:
+
+  > rake service:java
+
+Or, to execute a build of all services, you could do:
+
+  > rake service:all
+
+All components have an `all` target.  For example:
+
+  > rake services:all
+  > rake websdk:all
+  > rake runtime:all
+
+To build a specific installer, you could just specify the OS. For example:
+
+  > rake runtime:win32 
+  > rake runtime:unix
+  > rake runtime:osx
+
+To have rake print additional into, you need to set an environment variable.
+From a bash shell you can run:
+
+  > export VERBOSE=true; rake
+
+--------------------
+ Getting Assistance
+--------------------
+
+If you need more assistance, please go to the Appcelerator Developer Community 
+at <http://community.appcelerator.org>.
+
+We invite you to visit us on IRC at #appcelerator on irc.freenode.net.
+
+To report a bug or make a feature request, please visit our Issue Tracking
+portal at <http://jira.appcelerator.org>.
+
+If you are interested in becoming a community developer and contributing to
+Appcelerator Entourage, please contact us at <info@appcelerator.org>.
+
+
+-- The Appcelerator Team
+
+
+-------------
+ Legal Stuff 
+-------------
+
+Copyright (C) 2006-2008 by Appcelerator, Inc. All Rights Reserved.
+For more information, please visit <http://license.appcelerator.org>.
+Appcelerator, Appcelerator Entourage, Titanium and logos are trademark of
+Appcelerator, Inc.
+
+Please see the file named LICENSE for the full license.

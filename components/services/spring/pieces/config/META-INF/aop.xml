@@ -1,0 +1,18 @@
+<!DOCTYPE aspectj PUBLIC
+        "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+    <weaver options="-showWeaveInfo">
+
+        <!-- only weave classes in our application-specific packages -->
+        <!--include within="org.appcelerator.example.spring.*"/-->
+
+    </weaver>
+
+    <aspects>
+
+        <aspect name="org.appcelerator.example.spring.ProjectManager"/>
+
+    </aspects>
+
+  </aspectj>

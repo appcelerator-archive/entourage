@@ -1,0 +1,123 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <script type="text/javascript" charset="utf-8"
+			 src="javascripts/entourage.js"></script>
+
+	<link rel="stylesheet" href="assets/tests.css" type="text/css" media="screen" charset="utf-8" />
+
+</head>
+
+<body> 
+
+	<div id="testSelect">
+		Select test for this control..  
+		<a href="#" on="click then l:show[name=markup]">Markup Version</a> &nbsp;|&nbsp; 
+		<a href="#" on="click then l:show[name=api]">API Version</a>
+	</div>
+
+	<div id="MarkupTest" on="l:show[name=markup] then show else hide">
+		<div class="currentTest">Markup Version</div>
+		<div class="operations">
+
+			<div on="click then l:m.show">Show Calendar</div>
+			<div on="click then l:m.hide">Hide Calendar</div>
+
+		</div>
+		<div class="control">
+
+			<!-- Start MarkUp-Managed version of Control -->	
+			
+			<div id="cal1Container" control="yui_calendar[inputId=myDateInput1, title=Pick a Date]"
+				on="l:m.show then show">
+			</div>
+			<input id="myDateInput1" on="click then l:m.show">
+
+			<!-- End Control Code -->
+
+		</div>
+	</div>
+
+	<div id="APITest" on="l:show[name=api] then show else hide" style="display:none">
+		<div class="currentTest">API Version</div>		
+		<div class="operations">
+
+			<!-- this is a set of tests in which an action (click), invokes a message sent to the control. 
+				in this case the messages are prefixed with an 'a' (a.*). -->
+
+				<div on="click then script[init()]">Initialize from plain markup</div>
+				<div on="click then script[show()]">Show Calendar</div>
+				<div on="click then script[hide()]">Hide Calendar</div>
+				<div on="click then script[value()]">Set Value of Calendar</div>
+
+		</div>
+		<div class="control">
+
+			<!-- Start API-Managed version of Control  -->
+
+				<div type="text" id="myCalendar2" on="l:show.cal2 then show"></div>
+				<input id="myCalendarInput2" type="text" on="click then l:show.cal2">
+
+			<!-- End Control Code -->			
+
+		</div>		
+
+	</div>
+
+	<script>
+
+		// API-Managed version of Control...
+		
+	 	function init() {
+			
+			App.createControl(
+				'myCalendar2', 
+				'yui_calendar', 
+				{
+					inputId: "myCalendarInput2",
+					minDate: "03/04/2008"
+				},
+				function() {
+
+				}
+			);
+
+		}
+
+		function show()
+		{
+			// add a new listener for a message condaining data
+			App.getControl('myCalendar2', 'yui_calendar', function() {
+				this.show();
+				
+			});
+		}
+
+		function value()
+		{
+			// add a new listener for a message condaining data
+			App.getControl('myCalendar2', 'yui_calendar', function() {
+				this.value('03/05/2006');
+				
+			});
+		}
+
+		function hide()
+		{
+			// add a new listener for a message condaining data
+			App.getControl('myCalendar2', 'yui_calendar', function() {
+
+				this.hide();
+				
+			});
+		}
+		
+		
+	</script>
+
+	
+</body>
+
+</html>

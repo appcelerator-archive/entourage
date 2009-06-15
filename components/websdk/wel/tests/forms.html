@@ -1,0 +1,154 @@
+<html>
+
+<body>
+	<!-- basic validator/decorator tests -->
+	<input id="test1" type="text" validator="required" decorator="required" />
+	<input id="test2" type="text" validator="required" decorator="custom" decoratorId="custom_dec" />
+	<span id="custom_dec">foo</span>
+	<select id="test3" type="text" validator="required" decorator="required">
+		<option value="">one</option>
+		<option value="2">two</option>
+	</select>
+	<textarea id="test4" validator="required" decorator="required"></textarea>
+	<input id="test5" type="text" validator="zipcode_5" decorator="zipcode_5"/>
+	<input id="test6" type="text"  validator="phone_us" decorator="phone_us"/>
+	<input id="test7" type="text"  validator="ssn" decorator="ssn"/>
+	<input id="test8" type="text"  validator="email" decorator="email"/>
+	<input id="test9" type="text"  validator="date" decorator="date"/>
+	<input id="test10" type="text"  validator="number" decorator="number"/>
+	<input id="test11" type="text"  validator="fullname" decorator="fullname"/>
+	<input id="test12" type="text"  validator="alphanumeric" decorator="alphanumeric"/>
+	<input id="test13" type="text"  validator="noSpaces" decorator="noSpaces"/>
+	<input id="test14" type="text"  validator="password" decorator="password"/>
+	<input id="test15" type="text"  validator="url" decorator="url"/>
+	<input id="test16" type="checkbox"  validator="checked" decorator="checked"/>
+	<input id="test17" type="text"  validator="wholenumber" decorator="wholenumber"/>
+	<input id="test18" type="text"  validator="length" validatorMinLength="2" validatorMaxLength="4" decorator="length"/>
+	<input id="fullnameAdv" type="text"  validator="fullname" decorator="fullname"/>
+	
+	<!-- optional tests -->
+	<input id="test20" type="text"  validator="zipcode_5_optional" decorator="zipcode_5"/>
+	<input id="test21" type="text"  validator="phone_us_optional" decorator="phone_us"/>
+	<input id="test22" type="text"  validator="ssn_optional" decorator="ssn"/>
+	<input id="test23" type="text"  validator="email_optional" decorator="email"/>
+	<input id="test24" type="text"  validator="date_optional" decorator="date"/>
+	<input id="test25" type="text"  validator="number_optional" decorator="number"/>
+	<input id="test26" type="text"  validator="fullname_optional" decorator="fullname"/>
+	<input id="test27" type="text"  validator="alphanumeric_optional" decorator="alphanumeric"/>
+	<input id="test28" type="text"  validator="noSpaces_optional" decorator="noSpaces"/>
+	<input id="test29" type="text"  validator="password_optional" decorator="password"/>
+	<input id="test30" type="text"  validator="url_optional" decorator="url"/>
+	<input id="test31" type="text"  validator="wholenumber_optional" decorator="wholenumber"/>
+	
+	<!-- activator tests -->
+	<input id="activator_input_1" type="text" fieldset="bar" validator="required" decorator="required"/>
+	<input id="activator_input_2" type="text" fieldset="bar" validator="required" decorator="required"/>
+	<input id="activator_input_3" type="text" fieldset="bar1" validator="required" decorator="required"/>
+	<textarea fieldset="bar" id="activator_textarea1" validator="required" decorator="required">textarea_1_value</textarea>
+	<textarea fieldset="bar1" id="activator_textarea2" validator="required" decorator="required">textarea_2_value</textarea>
+	<select id="activator_select1" fieldset="bar" validator="required" decorator="required">
+		<option value="">foo</option>
+		<option value="select1_value">select1 value</option>
+	</select>
+	<select id="activator_select2" fieldset="bar1" validator="required" decorator="required">
+		<option value="">foo</option>
+		<option value="select2_value">select2 value</option>
+	</select>
+	<input type="button" id="activator_button_1" fieldset="bar" 
+			activators="activator_input_1,activator_input_2,textarea1,select1"/>
+	<input type="button"  id="activator_button_2" 
+		fieldset="bar1" activators="activator_input_3,textarea2,select2"/>
+	
+	
+	<!-- fieldset tests -->
+	<input type="text" fieldset="foo" id="input1" value="input1_value"/>
+	<input type="text" fieldset="foo" id="input2" value="input2_value"/>
+	<input type="text" fieldset="foo1" id="input3" value="input3_value"/>
+	<textarea fieldset="foo" id="textarea1">textarea_1_value</textarea>
+	<textarea fieldset="foo1" id="textarea2">textarea_2_value</textarea>
+	<select id="select1" fieldset="foo">
+		<option value="select1_value">select1 value</option>
+	</select>
+	<select id="select2" fieldset="foo1">
+		<option value="select2_value">select2 value</option>
+	</select>
+	<input type="button" fieldset="foo" on="click then l:fieldset_test1" id="button1" value="click me"/>
+	<input type="button" fieldset="foo1" on="click then l:fieldset_test2" id="button2" value="click me"/>
+	<input type="hidden" id="fieldset_test1">
+	<input type="hidden" id="fieldset_test2">
+
+	<script>
+	window.onload = function()
+	{
+		$MQL('l:fieldset_test2',function(msg)
+		{
+			var passed = true;
+			if (msg.payload.input1 == 'input1_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.input2 == 'input2_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.input3 != 'input3_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.textarea1 == 'textarea_1_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.textarea2 != 'textarea_2_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.select1 == 'select1_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.select2 != 'select2_value')
+			{
+				passed=false;			
+			}
+			swiss('#fieldset_test2').get(0).value = passed;	
+
+		});
+		$MQL('l:fieldset_test1',function(msg)
+		{
+			var passed = true;
+			if (msg.payload.input1 != 'input1_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.input2 != 'input2_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.input3 == 'input3_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.textarea1 != 'textarea_1_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.textarea2 == 'textarea_2_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.select1 != 'select1_value')
+			{
+				passed=false;			
+			}
+			if (msg.payload.select2 == 'select2_value')
+			{
+				passed=false;			
+			}
+			swiss('#fieldset_test1').get(0).value = passed;	
+		})		
+	}
+	</script>
+</body>
+
+</html>
